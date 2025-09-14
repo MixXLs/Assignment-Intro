@@ -1,0 +1,166 @@
+:root {
+    --kmutnb-orange: #FF5900;
+    --card-shadow: 0 6px 0 rgba(0, 0, 0, .18), 0 8px 26px rgba(0, 0, 0, .06);
+    --radius: 18px;
+}
+
+* {
+    box-sizing: border-box
+}
+
+html,
+body {
+    margin: 0;
+    height: 100%;
+    background: #ffffff;
+    color: #222;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, TH Sarabun New, Arial, sans-serif;
+}
+
+/* ===== Top Bar ===== */
+
+.topbar {
+    background: var(--kmutnb-orange);
+    height: 90px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 18px;
+    border-bottom: 4px solid #d44e0b;
+}
+
+.seal {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.seal img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.kmut-text {
+    color: #fff;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: .4px;
+    text-transform: uppercase;
+    font-size: 16px;
+}
+
+.kmut-text small {
+    display: block;
+    font-weight: 600;
+    opacity: .95;
+    margin-top: 2px;
+    font-size: 14px;
+}
+
+/* ===== Main ===== */
+.main {
+    max-width: 980px;
+    margin: 26px auto 0;
+    padding: 0 20px 40px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 28px;
+    margin: 70px 0 34px;
+    font-weight: 800;
+    letter-spacing: .3px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 36px;
+    justify-items: center;
+    margin-top: 14px;
+}
+
+.card {
+    margin-top: 70px;
+    width: 210px;
+    height: 160px;
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--card-shadow);
+    border: 1.5px solid #d2d7e0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform .12s ease, box-shadow .12s ease;
+    text-decoration: none;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 0 rgba(0, 0, 0, .18), 0 14px 34px rgba(0, 0, 0, .08);
+}
+
+/* พื้นหลังตามภาพ */
+.card.teacher {
+    background: linear-gradient(180deg, #FFE7DA 0%, #ffcbb1 100%);
+    border-color: #e9b9a7;
+}
+
+.card.staff {
+    background: linear-gradient(180deg, #E8FFF6 0%, #a9ffdc 100%);
+    border-color: #b2e0c9;
+}
+
+.card.student {
+    background: linear-gradient(180deg, #E6F1FF 0%, #aed3fa 100%);
+    border-color: #c4d6ff;
+}
+
+.icon svg {
+    width: 40px;
+    height: 40px;
+}
+
+.label {
+    font-weight: 700;
+    color: #3a3f4a;
+    font-size: 18px;
+}
+
+/* ===== Footer ===== */
+footer {
+    text-align: center;
+    margin: 70px 0 18px;
+    color: #5a6574;
+    font-size: 13px;
+}
+
+.cards-lecturer {
+  display: flex;
+  justify-content: center;   /* จัดให้อยู่กลางแนวนอน */
+  align-items: center;       /* จัดให้อยู่กลางแนวตั้ง (ถ้าสูงไม่เท่ากัน) */
+  gap: 40px;                 /* ระยะห่างระหว่างการ์ด */
+  margin-top: 40px;
+}
+
+/* สีพื้นหลังการ์ด */
+.teacher1 { background: linear-gradient(180deg,#FFE7DA 0%, #ffcbb1 100%) } /* ชมพูอ่อน */
+.teacher2 { background: linear-gradient(180deg, #E6F1FF 0%, #aed3fa 100%) } /* ฟ้าอ่อน */
+/* ===== Responsive ===== */
+@media (max-width:760px) {
+    .cards {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .card {
+        width: 86%;
+        max-width: 340px;
+        height: 150px;
+    }
+}
