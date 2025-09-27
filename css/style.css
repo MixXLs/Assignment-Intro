@@ -152,6 +152,16 @@ footer {
 /* สีพื้นหลังการ์ด */
 .teacher1 { background: linear-gradient(180deg,#FFE7DA 0%, #ffcbb1 100%) } /* ชมพูอ่อน */
 .teacher2 { background: linear-gradient(180deg, #E6F1FF 0%, #aed3fa 100%) } /* ฟ้าอ่อน */
+
+/* ให้ sidebar เติมความสูงคอลัมน์ */
+/* ให้ sidebar เติมความสูงคอลัมน์ */
+.sidebar{
+  height: 100%;
+  align-self: stretch;
+  /* ถ้าเคยมี position:sticky; height:fit-content; ให้ปิดทิ้ง */
+  position: static;
+}
+
 /* ===== Responsive ===== */
 @media (max-width:760px) {
     .cards {
@@ -166,184 +176,3 @@ footer {
     }
 }
 
-/* Wrapper flex */
-.wrapper {
-  display: flex;
-  height: 100vh;
-}
-
-/* Sidebar */
-.sidebar {
-  width: 220px;
-  background-color: #f2f2f2;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  border-right: 1px solid #ddd;
-}
-
-.sidebar .uni-logo img {
-  width: 120px;
-  margin-bottom: 30px;
-}
-
-.sidebar nav a {
-  display: block;
-  padding: 10px 15px;
-  margin-bottom: 5px;
-  text-decoration: none;
-  color: #333;
-  border-radius: 8px;
-}
-
-.sidebar nav a.active {
-  background-color: #ffd8cc;
-}
-
-.contact {
-  margin-top: auto;
-  font-size: 12px;
-  color: #555;
-}
-
-.gear-icons img {
-  width: 20px;
-  margin-right: 3px;
-}
-
-/* Main Content */
-.main-content {
-  flex: 1;
-  padding: 30px;
-}
-
-.header h1 {
-  margin-bottom: 20px;
-  font-weight: 600;
-}
-
-.cards {
-  display: flex;
-  gap: 20px;
-}
-
-.card {
-  flex: 1;
-  background-color: #fff;
-  padding: 25px;
-  border-radius: 15px;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-.card .label {
-  font-size: 14px;
-  margin-bottom: 10px;
-}
-
-.card .number {
-  font-size: 36px;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.card .unit {
-  font-size: 14px;
-  color: #555;
-}
-
-/* Card colors */
-.card-blue { background-color: #e6f0ff; }
-.card-orange { background-color: #fff0e6; }
-.card-green { background-color: #e6fff0; }
-
-/* Sidebar nav buttons */
-.sidebar nav a {
-  display: block;
-  padding: 12px 18px;
-  margin-bottom: 12px;
-  text-decoration: none;
-  color: #333;
-  font-weight: 600;
-  border-radius: 12px;
-  background: #ffffff;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.08); /* เงาอ่อนๆ */
-  transition: all 0.2s ease;
-}
-
-/* Hover effect */
-.sidebar nav a:hover {
-  background: linear-gradient(135deg, #ffebe0, #ffd0b3); /* ไล่สีส้มอ่อน */
-  color: #000;
-  transform: translateY(-2px); /* ยกปุ่มขึ้น */
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-}
-
-/* Active button */
-.sidebar nav a.active {
-  background: linear-gradient(135deg, #ff9966, #ff5e00);
-  color: #fff;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.2);
-}
-
-/* หัวข้อเมนู */
-.menu-title {
-  font-size: 18px;          /* ใหญ่กว่าปุ่ม */
-  font-weight: 700;         /* ตัวหนา */
-  color: #222;              /* เข้มชัด */
-  margin: 16px 0 14px;
-  padding-left: 5px;
-  text-transform: none;     /* ไม่ต้อง uppercase */
-  letter-spacing: 0.3px;
-  border-bottom: 2px solid #ddd; /* เส้นคั่นให้ดูแยกจากปุ่ม */
-  padding-bottom: 6px;
-}
-
-/* ปุ่มใน sidebar */
-.sidebar nav a {
-  display: block;
-  padding: 10px 16px;
-  margin-bottom: 10px;
-  text-decoration: none;
-  font-size: 15px;        /* เล็กกว่าหัวข้อ */
-  font-weight: 500;
-  color: #333;
-  border-radius: 10px;
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  transition: all 0.2s ease;
-}
-
-/* Hover */
-.sidebar nav a:hover {
-  background: linear-gradient(135deg, #ffebe0, #ffd0b3);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
-}
-
-/* Active */
-.sidebar nav a.active {
-  background: linear-gradient(135deg, #ff9966, #ff5e00);
-  color: #fff;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.2);
-}
-
-/* กล่องครอบเนื้อหาแดชบอร์ด */
-.content-box {
-  background: #fff;
-  border: 1.5px solid #ddd;
-  border-radius: 18px;
-  padding: 25px 30px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  margin-bottom: 30px;
-}
-
-/* หัวข้อในกล่อง */
-.content-box .header h1 {
-  margin: 0 0 20px;
-  font-size: 24px;
-  font-weight: 700;
-  color: #333;
-  border-bottom: 2px solid #eee;
-  padding-bottom: 10px;
-}
