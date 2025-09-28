@@ -1,0 +1,190 @@
+:root {
+  --kmutnb-orange: #FF5900;
+  --radius: 16px;
+  --shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Reset */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, TH Sarabun New, Arial, sans-serif;
+  background: #fff;
+  color: #222;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Top Bar ===== */
+.topbar {
+  background: var(--kmutnb-orange);
+  height: 90px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 4px solid #d44e0b;
+}
+
+.seal {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 14px;
+}
+.seal img { width: 100%; height: 100%; object-fit: contain; }
+
+.kmut-text {
+  color: #fff;
+  font-weight: 600;
+  line-height: 1.2;
+  font-size: 16px;
+}
+.kmut-text small {
+  display: block;
+  font-size: 14px;
+  opacity: 0.95;
+}
+
+/* ===== Layout ===== */
+.wrapper {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background: #f9f9f9;
+  border-right: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 14px;
+}
+
+.sidebar nav a {
+  display: block;
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 600;
+  color: #333;
+  background: #fff;
+  border: 1px solid #ddd;
+  transition: background 0.2s;
+}
+.sidebar nav a.active {
+  background: #ffece4;
+  color: #000;
+  border-color: #f2c7b5;
+}
+.sidebar nav a:hover {
+  background: #f5f5f5;
+}
+
+/* Sidebar contact */
+.contact {
+  font-size: 13px;
+  padding: 0 16px;
+  color: #444;
+}
+.contact img {
+  height: 100px;
+  padding-left: 10%;
+  width: 200px;
+  margin-bottom: 6px;
+}
+
+/* ===== Main Content ===== */
+.main-content {
+  flex: 1;
+  padding: 30px;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.content-box {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 18px;
+  padding: 30px 40px;
+  box-shadow: var(--shadow);
+  max-width: 780px;   /* ✅ ลดความกว้าง */
+  width: 100%;
+  margin: 0 auto;     /* ✅ จัดให้อยู่ตรงกลาง */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content-box h1 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+/* Project Grid */
+.project-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.project-card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 20px;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.project-card h3 {
+  font-size: 16px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.input-box, .textarea-box {
+  background: #f7f9fc;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+.textarea-box {
+  min-height: 120px;
+}
+
+/* ===== Footer ===== */
+footer {
+  text-align: center;
+  padding: 10px;
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: -40px;   /* ดึงขึ้นมาใกล้ box */
+}
+
+
+/* ===== Responsive ===== */
+@media (max-width:760px) {
+  .project-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .content-box {
+    padding: 20px;
+    max-width: 100%; /* ทำให้เต็มจอเวลา mobile */
+  }
+}
