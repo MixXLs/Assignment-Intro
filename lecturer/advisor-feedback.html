@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>เสนอความคิดเห็น & เปอร์เซ็นต์ความสำเร็จ (อาจารย์)</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <script src="../JavaScript/script.js" defer></script>
+</head>
+
+<body class="req-surface" data-advisor="รศ.ดร.อนิราช มิ่งขวัญ">
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="seal"><a href="../index.html"><img src="../images/kmutnb_logo.png" alt="KMUTNB Logo" /></a></div>
+        <div class="kmut-text">
+            KING MONGKUT'S UNIVERSITY OF TECHNOLOGY NORTH BANGKOK
+            <small>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</small>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <nav>
+                <div class="menu-title">โครงงาน</div>
+                <a href="advisor-dashboard.html">แดชบอร์ด</a>
+                <a href="advisor-feedback.html" class="active">จัดการโครงงาน</a>
+            </nav>
+            <div class="contact">
+                <div class="gear-icons"><img src="../images/gear_red.png" alt="gear"></div>
+                <div>กรณีที่พบปัญหาการใช้งาน</div>
+                <div>ติดต่อได้ที่ 02-555-2000</div>
+                <div>กลุ่มงานทะเบียนฯ ต่อ 1628-1635</div>
+                <div>บัณฑิตวิทยาลัย ต่อ 2406, 2413 - 2415</div>
+                <div>กลุ่มงานการเงิน ต่อ 1602 - 1605</div>
+                <div>งานกองทุน ต่อ 1150, 1161</div>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="main2">
+            <div class="dashboard-container">
+                <h1 class="dash-title">เสนอความคิดเห็น & เปอร์เซ็นต์ความสำเร็จ</h1>
+                <div id="advisorName" style="text-align:center;margin:-6px 0 16px;color:#555;font-weight:700;"></div>
+
+                <!-- ฟิลเตอร์ -->
+                <div class="filters-toolbar">
+                    <input id="qSearch" class="input" placeholder="ค้นหา กลุ่ม/หัวข้อ…" />
+                    <select id="branchFilter" class="input">
+                        <option value="">ทุกสาขา</option>
+                        <option value="IT">IT</option>
+                        <option value="ITI">ITI</option>
+                        <option value="INE">INE</option>
+                        <option value="INET">INET</option>
+                        <option value="ITT">ITT</option>
+                    </select>
+                    <select id="statusFilter" class="input">
+                        <option value="">สถานะทั้งหมด</option>
+                        <option value="รอตรวจ">รอตรวจ</option>
+                        <option value="แก้ไข">แก้ไข</option>
+                        <option value="อนุมัติ">อนุมัติ</option>
+                        <option value="ไม่ผ่าน">ไม่ผ่าน</option>
+                        <option value="รอสอบ">รอสอบ</option>
+                        <option value="กำลังทำ">กำลังทำ</option>
+                    </select>
+                </div>
+
+                <!-- ตาราง -->
+                <div class="req-table-wrap" style="margin-bottom:16px;">
+                    <table class="req-table" id="advListTable">
+                        <thead>
+                            <tr>
+                                <th>วันที่</th>
+                                <th>ทีม/นักศึกษา</th>
+                                <th>หัวข้อโครงงาน</th>
+                                <th>สาขา</th>
+                                <th>ประเภท</th>
+                                <th data-col="status">สถานะ</th>
+                                <th class="ta-right">ดำเนินการ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- ตัวอย่างแถวพร้อมไฟล์แนบ -->
+                            <tr data-date="2025-09-10" data-team="PPWO" data-title="Smart Hydroponic Monitor"
+                                data-branch="IT" data-type="โครงงานสหกิจ" data-status="กำลังทำ"
+                                data-advisor="รศ.ดร.อนิราช มิ่งขวัญ"
+                                data-files='[{"name":"Proposal.pdf","url":"#"},{"name":"ภาพรวมระบบ.pptx","url":"#"}]'>
+                                <td>2025-02-10</td>
+                                <td>PPWO</td>
+                                <td>Smart Hydroponic Monitor</td>
+                                <td>IT</td>
+                                <td><span class="type-badge type-topic">โครงงานสหกิจ</span></td>
+                                <td data-col="status"><span class="pill pill-run">กำลังทำ</span></td>
+                                <td class="row-actions ta-right">
+                                    <button class="btn-detail" data-action="open-feedback">ให้ความเห็น</button>
+                                </td>
+                            </tr>
+
+                            <tr data-date="2025-09-08" data-team="Debuggers" data-title="เว็บจัดการโครงงาน"
+                                data-branch="INE" data-type="โครงงานพิเศษ" data-status="รอตรวจ"
+                                data-advisor="รศ.ดร.อนิราช มิ่งขวัญ" data-files='[{"name":"คำขอ.pdf","url":"#"}]'>
+                                <td>2025-09-08</td>
+                                <td>Debuggers</td>
+                                <td>เว็บจัดการโครงงาน</td>
+                                <td>INE</td>
+                                <td><span class="type-badge type-project">โครงงานพิเศษ</span></td>
+                                <td data-col="status"><span class="p p-wait">รอตรวจ</span></td>
+                                <td class="row-actions ta-right">
+                                    <button class="btn-detail" data-action="open-feedback">ให้ความเห็น</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: ให้ความเห็น + ดาวน์โหลดไฟล์ -->
+    <div class="modal" id="fbModal" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-header">
+                <strong>ให้ความเห็น & เปอร์เซ็นต์</strong>
+                <button class="modal-close" id="fbClose" aria-label="ปิด">×</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="detail-grid">
+                    <div>
+                        <span class="d-label">ทีม</span>
+                        <div class="d-value" id="mTeam">-</div>
+                    </div>
+                    <div>
+                        <span class="d-label">สาขา</span>
+                        <div class="d-value" id="mBranch">-</div>
+                    </div>
+                    <div class="full">
+                        <span class="d-label">หัวข้อ</span>
+                        <div class="d-value" id="mTitle">-</div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <span class="d-label">ไฟล์เอกสารแนบ</span>
+                    <ul id="mFiles" class="file-list"></ul>
+                    <div style="margin-top:8px;">
+                        <button class="btn-detail" id="btnOpenAll">เปิดไฟล์ทั้งหมด</button>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <span class="d-label">เปอร์เซ็นต์ความสำเร็จ (0–100%)</span>
+                    <input id="mPercent" class="input" type="number" min="0" max="100" step="1" placeholder="เช่น 65" />
+                </div>
+
+                <div class="detail-section">
+                    <span class="d-label">ความคิดเห็น/ข้อเสนอแนะ</span>
+                    <textarea id="mComment" class="textarea" placeholder="เขียนข้อเสนอแนะให้ทีม"></textarea>
+                </div>
+
+                <div id="mError" class="notify-panel"
+                    style="display:none;color:#8a1f1f;background:#fff3f3;border-color:#ffc3c3;">
+                    ⚠ กรุณากรอกเปอร์เซ็นต์ให้ถูกต้อง (0–100)
+                </div>
+                <div id="mSaved" class="notify-panel" style="display:none;">✅ บันทึกเรียบร้อย</div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-reject" id="btnReject">ไม่ผ่าน</button>
+                <button class="btn-detail" id="btnApproveEdit">ผ่านแต่แก้ไข</button>
+                <button class="btn-schedule" id="btnApprove">ผ่าน</button>
+                <button class="btn-cancel" id="fbCancel">ยกเลิก</button>
+                <button class="btn-save" id="fbSave">บันทึกความเห็น</button>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

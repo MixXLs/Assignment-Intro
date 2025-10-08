@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>แดชบอร์ดอาจารย์ </title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <script defer src="../JavaScript/script.js"></script>
+</head>
+
+<body class="req-surface" data-branch="INE">
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="seal"><a href="../index.html"><img src="../images/kmutnb_logo.png" alt="KMUTNB Logo" /></a></div>
+        <div class="kmut-text">
+            KING MONGKUT'S UNIVERSITY OF TECHNOLOGY NORTH BANGKOK
+            <small>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</small>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <nav>
+                <div class="menu-title">โครงงาน </div>
+                <a href="lecturer-dashboard.html" class="active">แดชบอร์ด</a>
+                <a href="lecturer-feedback.html">จัดการโครงงาน</a>
+            </nav>
+            <div class="contact">
+                <div class="gear-icons"><img src="../images/gear_red.png" alt="gear"></div>
+                <div>กรณีที่พบปัญหาการใช้งาน</div>
+                <div>ติดต่อได้ที่ 02-555-2000</div>
+                <div>กลุ่มงานทะเบียนฯ ต่อ 1628-1635</div>
+                <div>บัณฑิตวิทยาลัย ต่อ 2406, 2413 - 2415</div>
+                <div>กลุ่มงานการเงิน ต่อ 1602 - 1605</div>
+                <div>งานกองทุน ต่อ 1150, 1161</div>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="main2">
+            <div class="dashboard-container">
+                <section class="page dashboard-page">
+                    <div class="dash-wrap">
+                        <h2 class="dash-title">แดชบอร์ด (สาขา INE)</h2>
+                        <div id="advisorName" style="text-align:center;margin:-6px 0 16px;color:#555;font-weight:700;">
+                        </div>
+
+                        <!-- KPI Cards -->
+                        <div class="kpi-row">
+                            <div class="kpi-card kpi-blue">
+                                <span class="kpi-tag">โครงงานทั้งหมด (INE)</span>
+                                <div class="kpi-value" id="kpiAll" data-count="0">3</div>
+                                <div class="kpi-sub">ทุกที่ปรึกษา</div>
+                            </div>
+                            <div class="kpi-card kpi-orange">
+                                <span class="kpi-tag">รอตรวจ</span>
+                                <div class="kpi-value" id="kpiPending" data-count="0">2</div>
+                                <div class="kpi-sub">คำร้อง/เอกสาร</div>
+                            </div>
+                            <div class="kpi-card kpi-green">
+                                <span class="kpi-tag">รอสอบ</span>
+                                <div class="kpi-value" id="kpiExam" data-count="0">1</div>
+                                <div class="kpi-sub">กำลังรอกำหนดสอบ</div>
+                            </div>
+                        </div>
+
+                        <!-- Filters Toolbar (สำหรับ "ตารางข้อมูลล่าสุด") -->
+                        <div class="filters-toolbar">
+                            <input id="qSearch" class="input" type="search"
+                                placeholder="ค้นหาโครงงาน/นักศึกษา/อาจารย์…" />
+                            <select id="statusFilter" class="input">
+                                <option value="">สถานะทั้งหมด</option>
+                                <option value="กำลังทำ">กำลังทำ</option>
+                                <option value="รอสอบ">รอสอบ</option>
+                                <option value="เสร็จสิ้น">เสร็จสิ้น</option>
+                                <option value="รออนุมัติ">รออนุมัติ</option>
+                                <option value="รอตรวจ">รอตรวจ</option>
+                            </select>
+                            <!-- สาขาคงไว้เป็น INE อย่างเดียว เพื่อกันเปลี่ยนไปสาขาอื่น -->
+                            <select id="branchFilter" class="input" disabled>
+                                <option value="INE" selected>INE</option>
+                            </select>
+                        </div>
+
+                        <!-- Status Summary Cards -->
+                        <div class="status-cards">
+                            <div class="status-card warn">
+                                <div class="status-card__tag">รออนุมัติ</div>
+                                <div id="statPending" class="status-card__value">0</div>
+                                <div class="status-card__sub">โครงงาน</div>
+                            </div>
+                            <div class="status-card alert">
+                                <div class="status-card__tag">ใกล้ครบกำหนด</div>
+                                <div id="statDueSoon" class="status-card__value">0</div>
+                                <div class="status-card__sub">ภายใน 14 วัน</div>
+                            </div>
+                            <div class="status-card muted">
+                                <div class="status-card__tag">ยังไม่ส่งเอกสาร</div>
+                                <div id="statMissingDocs" class="status-card__value">0</div>
+                                <div class="status-card__sub">ทีม</div>
+                            </div>
+                        </div>
+
+                        <!-- Notifications -->
+                        <div class="notify-panel">
+                            <div class="notify-header">
+                                <strong>การแจ้งเตือน</strong>
+                                <span id="notifyCount" class="badge">0</span>
+                            </div>
+                            <ul id="notifyList" class="notify-list"></ul>
+                        </div>
+
+                        <!-- Recent Table (เฉพาะ INE เท่านั้น) -->
+                        <div class="recent-wrap">
+                            <div class="recent-header">
+                                <strong>ตารางข้อมูลล่าสุด (INE)</strong>
+                                <small id="resultCounter">แสดง 0 รายการ</small>
+                            </div>
+                            <div class="table-scroll">
+                                <table class="recent-table" id="recentTable">
+                                    <thead>
+                                        <tr>
+                                            <th>วันที่</th>
+                                            <th>ชื่อโครงงาน</th>
+                                            <th>นักศึกษา</th>
+                                            <th>อาจารย์ที่ปรึกษา</th>
+                                            <th>อาจารย์ที่ปรึกษาร่วม</th>
+                                            <th>สถานะ</th>
+                                            <th>สาขา</th>
+                                            <th>กำหนดส่ง</th>
+                                            <th>เอกสาร</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- ตัวอย่าง: ใส่เฉพาะ INE -->
+                                        <tr data-status="รอสอบ" data-branch="INE" data-docs="ok"
+                                            data-duedate="2025-11-01">
+                                            <td>2025-10-03</td>
+                                            <td>IoT Monitoring โรงงาน</td>
+                                            <td>ปัณณทัต ทองคำชุม</td>
+                                            <td>รศ.ดร.อนิราช มิ่งขวัญ</td>
+                                            <td>อ.ดร.ประดิษฐ์ พิทักษ์เสถียรกุล</td>
+                                            <td><span class="pill pill-wait">รอสอบ</span></td>
+                                            <td>INE</td>
+                                            <td>2025-11-01</td>
+                                            <td><span class="pill pill-ok">ครบ</span></td>
+                                        </tr>
+                                        <tr data-status="รออนุมัติ" data-branch="INE" data-docs="missing"
+                                            data-duedate="2025-10-22">
+                                            <td>2025-10-10</td>
+                                            <td>Smart Hydroponic Monitor (INE)</td>
+                                            <td>กลุ่ม G2</td>
+                                            <td>อ.ดร.ศิรินทรา แว่วศรี</td>
+                                            <td>ผศ.พีระศักดิ์ เสรีกุล</td>
+                                            <td><span class="pill pill-warn">รออนุมัติ</span></td>
+                                            <td>INE</td>
+                                            <td>2025-10-22</td>
+                                            <td><span class="pill pill-missing">ยังไม่ส่ง</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

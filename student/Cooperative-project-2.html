@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ความก้าวหน้าโครงงาน</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body>
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="seal">
+            <a href="../index.html">
+                <img src="../images/kmutnb_logo.png" alt="KMUTNB Logo">
+            </a>
+        </div>
+        <div class="kmut-text">
+            KING MONGKUT'S UNIVERSITY OF TECHNOLOGY NORTH BANGKOK
+            <small>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</small>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav>
+                <div class="menu-title">โครงงาน</div>
+                <a href="student.html" class="back-btn">⬅ กลับหน้าหลัก</a>
+                <a href="Cooperative-project-1.html">เสนอหัวข้อโครงงาน</a>
+                <a href="Cooperative-project-2.html" class="active">ความก้าวหน้าโครงงาน</a>
+                <a href="Cooperative-project-status.html">สถานะโครงงานสหกิจ</a>
+            </nav>
+
+            <div class="contact">
+                <div class="gear-icons"><img src="../images/gear_red.png" alt="gear"></div>
+                <div>กรณีที่พบปัญหาการใช้งาน</div>
+                <div>ติดต่อได้ที่ 02-555-2000</div>
+                <div>กลุ่มงานทะเบียนฯ ต่อ 1628-1635</div>
+                <div>บัณฑิตวิทยาลัย ต่อ 2406, 2413 - 2415</div>
+                <div>กลุ่มงานการเงิน ต่อ 1602 - 1605</div>
+                <div>งานกองทุน ต่อ 1150, 1161</div>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="main2">
+            <section class="page progress-page">
+                <h1>โครงงาน AI Chatbot (สนทนาทั่วไป)</h1>
+
+                <div class="progress-shell">
+                    <div class="progress-inner">
+
+                        <div class="progress-header">
+                            <span class="index">1.</span>
+                            <span>รายงานโครงงาน</span>
+                        </div>
+
+                        <!-- ชื่อโครงงาน -->
+                        <div class="row-2">
+                            <label class="label">ชื่อโครงงาน</label>
+                            <textarea class="input soft" readonly>
+ระบบ AI Chatbot สำหรับการสนทนาทั่วไป 
+              </textarea>
+                        </div>
+
+                        <!-- ตารางรายสัปดาห์ -->
+                        <div class="weeks">
+
+                            <!-- Week 1 -->
+                            <div class="week-row">
+                                <div class="week-col">
+                                    <label class="label">สัปดาห์ที่ 1</label>
+                                    <input type="text" class="input soft"
+                                        value="กำหนดขอบเขตการสนทนา รวบรวมคอร์ปัสสนทนาพื้นฐาน เตรียมชุดข้อมูลตัวอย่าง (intent, utterance, response) และออกแบบโครงสร้างโปรเจกต์">
+                                    <label class="label">ไฟล์แนบ</label>
+                                    <input type="file" class="file">
+                                </div>
+                                <div class="week-col">
+                                    <label class="label">ความคิดเห็นอาจารย์</label>
+                                    <textarea class="input soft" readonly>
+ระบุ intent หลัก 8–10 หมวด (ทักทาย, อารมณ์, สภาพอากาศ, เวลา, ช่วยเหลือ, ลา, ขอบคุณ ฯลฯ) และเตรียมตัวอย่างต่อ intent 20+ บรรทัด
+                  </textarea>
+                                </div>
+                            </div>
+
+                            <!-- Week 2 -->
+                            <div class="week-row">
+                                <div class="week-col">
+                                    <label class="label">สัปดาห์ที่ 2</label>
+                                    <input type="text" class="input soft"
+                                        value="สร้างตัวจำแนก intent (TF-IDF+SVM / fastText / Distil model เบา ๆ) + entity เบื้องต้น และทำ rule สำหรับ fallback/unknown">
+                                    <label class="label">ไฟล์แนบ</label>
+                                    <input type="file" class="file">
+                                </div>
+                                <div class="week-col">
+                                    <label class="label">ความคิดเห็นอาจารย์</label>
+                                    <textarea class="input soft" readonly>
+บันทึกผลความแม่นยำด้วย Confusion Matrix; เพิ่ม thesaurus คำพ้อง (เช่น 'ฮัลโหล' = 'สวัสดี') เพื่อลด OOV
+                  </textarea>
+                                </div>
+                            </div>
+
+                            <!-- Week 3 -->
+                            <div class="week-row">
+                                <div class="week-col">
+                                    <label class="label">สัปดาห์ที่ 3</label>
+                                    <input type="text" class="input soft"
+                                        value="เชื่อมโมดูลตอบกลับ: rule-based response + template + ตัวเลือกสุ่ม, เพิ่ม context สั้น ๆ (จำประโยคก่อนหน้า 1–2 เทิร์น) และรองรับไทย-อังกฤษ">
+                                    <label class="label">ไฟล์แนบ</label>
+                                    <input type="file" class="file">
+                                </div>
+                                <div class="week-col">
+                                    <label class="label">ความคิดเห็นอาจารย์</label>
+                                    <textarea class="input soft" readonly>
+ทดสอบ multi-turn อย่างน้อย 30 บทสนทนา; จัดการกรณีเปลี่ยนหัวข้อกะทันหันด้วย reset context
+                  </textarea>
+                                </div>
+                            </div>
+
+                            <!-- Week 4 -->
+                            <div class="week-row">
+                                <div class="week-col">
+                                    <label class="label">สัปดาห์ที่ 4</label>
+                                    <input type="text" class="input soft"
+                                        value="ทำเว็บหน้าต่างสนทนา (Flask/Streamlit) รองรับพิมพ์/กดส่ง แสดงเวลา/ผู้พูด เก็บ log เพื่อวัด CSAT และปรับปรุงประโยคตอบกลับ">
+                                    <label class="label">ไฟล์แนบ</label>
+                                    <input type="file" class="file">
+                                </div>
+                                <div class="week-col">
+                                    <label class="label">ความคิดเห็นอาจารย์</label>
+                                    <textarea class="input soft" readonly>
+สรุปตัวชี้วัด: intent accuracy, avg response time, ความพึงพอใจผู้ใช้; เพิ่มปุ่มรายงานคำตอบไม่เหมาะสม (report)
+                  </textarea>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="actions">
+                            <input type="submit" value="บันทึก" class="btn-save pill">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <footer>© 2025 ระบบจัดการโครงงาน • FITM • KMUTNB</footer>
+        </main>
+    </div>
+</body>
+
+</html>

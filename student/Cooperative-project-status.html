@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>สถานะโครงงานสหกิจ</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="seal">
+            <a href="../index.html">
+                <img src="../images/kmutnb_logo.png" alt="KMUTNB Logo">
+            </a>
+        </div>
+        <div class="kmut-text">
+            KING MONGKUT'S UNIVERSITY OF TECHNOLOGY NORTH BANGKOK
+            <small>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</small>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav>
+                <div class="menu-title">โครงงาน</div>
+                <a href="student.html" class="back-btn">⬅ กลับหน้าหลัก</a>
+                <a href="Cooperative-project-1.html">เสนอหัวข้อโครงงาน</a>
+                <a href="Cooperative-project-2.html">ความก้าวหน้าโครงงาน</a>
+                <a href="Cooperative-project-status.html" class="active">สถานะโครงงานสหกิจ</a>
+            </nav>
+
+            <div class="contact">
+                <div class="gear-icons"><img src="../images/gear_red.png" alt="gear"></div>
+                <div>กรณีที่พบปัญหาการใช้งาน</div>
+                <div>ติดต่อได้ที่ 02-555-2000</div>
+                <div>กลุ่มงานทะเบียนฯ ต่อ 1628-1635</div>
+                <div>บัณฑิตวิทยาลัย ต่อ 2406, 2413 - 2415</div>
+                <div>กลุ่มงานการเงิน ต่อ 1602 - 1605</div>
+                <div>งานกองทุน ต่อ 1150, 1161</div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main2">
+            <section class="page status-page">
+                <h1>สถานะโครงงานสหกิจ</h1>
+
+                <!-- ข้อมูลโปรเจกต์ -->
+                <div class="form-card" style="margin-bottom:16px;">
+                    <div class="form-row">
+                        <div>
+                            <label class="label">ชื่อโครงงาน</label>
+                            <input id="projTitle" class="input soft" type="text" value="ระบบจัดการเช่ารถยนต์" readonly>
+                        </div>
+                        <div>
+                            <label class="label">สาขาวิชา</label>
+                            <input id="branchName" class="input soft" type="text" value="INE" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div>
+                            <label class="label">อาจารย์ที่ปรึกษา</label>
+                            <input id="advisorName" class="input soft" type="text" value="ผศ.ดร.นิติการ นาคเจือทอง"
+                                readonly>
+                        </div>
+                        <div>
+                            <label class="label">อาจารย์ที่ปรึกษาร่วม</label>
+                            <input id="coAdvisor" class="input soft" type="text" value="รศ.ดร.อนิราช มิ่งขวัญ" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ความคืบหน้า -->
+                <div class="form-card">
+                    <div class="progress-section">
+                        <div class="progress-header" style="justify-content:center;">
+                            <span id="percent" class="percent">100%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="progress" class="progress-fill" style="width:100%"></div>
+                        </div>
+                    </div>
+
+                    <!-- ปุ่มยื่นสอบ -->
+                    <div class="actions" style="margin-top: 20px; text-align:center;">
+                        <button class="btn-save">✓ ยื่นสอบ</button>
+                    </div>
+
+                    <!-- ซ่อนข้อความเหลือเปอร์เซ็นต์เมื่อครบ 100% -->
+                    <p id="remainingText" class="remaining-text" style="display:none;"></p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer>© 2025 ระบบจัดการโครงงาน · FITM · KMUTNB</footer>
+
+    <!-- (ไม่จำเป็น แต่ถ้าอยากให้กดแล้วไปหน้าใหม่ ให้ปลดคอมเมนต์บรรทัด window.location.href) -->
+    <script src="../JavaScript/script.js"></script>
+</body>
+
+</html>

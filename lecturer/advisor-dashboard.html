@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>แดชบอร์ด</title>
+
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body class="req-surface" data-advisor="รศ.ดร.อนิราช มิ่งขวัญ">
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="seal">
+      <a href="../index.html"><img src="../images/kmutnb_logo.png" alt="KMUTNB Logo" /></a>
+    </div>
+    <div class="kmut-text">
+      KING MONGKUT'S UNIVERSITY OF TECHNOLOGY NORTH BANGKOK
+      <small>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</small>
+    </div>
+  </div>
+
+  <div class="wrapper">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <nav>
+        <div class="menu-title">โครงงาน</div>
+        <a href="advisor-dashboard.html" class="active">แดชบอร์ด</a>
+        <a href="advisor-feedback.html" >จัดการโครงงาน</a>
+      </nav>
+      <div class="contact">
+        <div class="gear-icons"><img src="../images/gear_red.png" alt="gear"></div>
+        <div>กรณีที่พบปัญหาการใช้งาน</div>
+        <div>ติดต่อได้ที่ 02-555-2000</div>
+        <div>กลุ่มงานทะเบียนฯ ต่อ 1628-1635</div>
+        <div>บัณฑิตวิทยาลัย ต่อ 2406, 2413 - 2415</div>
+        <div>กลุ่มงานการเงิน ต่อ 1602 - 1605</div>
+        <div>งานกองทุน ต่อ 1150, 1161</div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main2">
+      <div class="dashboard-container">
+        <h1 class="dash-title">แดชบอร์ด</h1>
+        <div id="advisorName" style="text-align:center; margin:-6px 0 16px; color:#555; font-weight:700;"></div>
+
+        <!-- KPIs -->
+        <div class="kpi-row" style="margin-bottom:10px">
+          <div class="kpi-card kpi-blue">
+            <span class="kpi-tag">โครงงานทั้งหมด (ที่ปรึกษา)</span>
+            <div class="kpi-value" id="kpiAll" data-count="0">0</div>
+            <div class="kpi-sub">รวมทั้งหัวข้อ/โปรเจคต์</div>
+          </div>
+          <div class="kpi-card kpi-orange">
+            <span class="kpi-tag">รอตรวจ</span>
+            <div class="kpi-value" id="kpiPending" data-count="0">0</div>
+            <div class="kpi-sub">รอตรวจคำร้อง/เอกสาร</div>
+          </div>
+          <div class="kpi-card kpi-green">
+            <span class="kpi-tag">รอสอบ</span>
+            <div class="kpi-value" id="kpiExam" data-count="0">0</div>
+            <div class="kpi-sub">รอกำหนด/ถึงคิวสอบ</div>
+          </div>
+        </div>
+
+        <!-- ตัวกรอง -->
+        <div class="filters-toolbar">
+          <input id="adSearch" class="input" placeholder="ค้นหา กลุ่ม/หัวข้อ…" />
+          <select id="adType" class="input">
+            <option value="">ทุกประเภท</option>
+            <option value="โครงงานพิเศษ">โครงงานพิเศษ</option>
+            <option value="โครงงานสหกิจ">โครงงานสหกิจ</option>
+          </select>
+          <select id="adStatus" class="input">
+            <option value="">สถานะทั้งหมด</option>
+            <option value="รอตรวจ">รอตรวจ</option>
+            <option value="แก้ไข">แก้ไข</option>
+            <option value="อนุมัติ">อนุมัติ</option>
+            <option value="ไม่ผ่าน">ไม่ผ่าน</option>
+            <option value="รอสอบ">รอสอบ</option>
+            <option value="กำลังทำ">กำลังทำ</option>
+          </select>
+        </div>
+
+        <!-- ตาราง -->
+        <div class="req-table-wrap">
+          <table class="req-table" id="advisorTable">
+            <thead>
+              <tr>
+                <th>วันที่</th>
+                <th>ทีม/นักศึกษา</th>
+                <th>หัวข้อโครงงาน</th>
+                <th>ประเภท</th>
+                <th data-col="status">สถานะ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- ตัวอย่างข้อมูล: ใช้ data-advisor เพื่อให้ฟิลเตอร์จับคู่ -->
+              <tr data-date="2025-09-10" data-team="PPWO"
+                  data-title="Smart Hydroponic Monitor" data-type="โครงงานสหกิจ"
+                  data-status="รอตรวจ" data-advisor="รศ.ดร.อนิราช มิ่งขวัญ"
+                  data-coadvisor="ผศ.พีระศักดิ์ เสรีกุล"
+                  data-objective="ตรวจสอบคุณภาพน้ำไฮโดรโปนิกส์แบบเรียลไทม์"
+                  data-result="ต้นแบบ IoT + แดชบอร์ดใช้งานจริง"
+                  data-scope="ตรวจวัด pH/EC, ควบคุมปั๊ม, แจ้งเตือนมือถือ"
+                  data-branch="IT"
+                  data-files='[{"name":"คำขอ.pdf","url":"#"}]'>
+                <td>2025-09-10</td>
+                <td>PPWO</td>
+                <td>Smart Hydroponic Monitor</td>
+                <td><span class="type-badge type-topic">โครงงานสหกิจ</span></td>
+                <td data-col="status"><span class="p p-wait">รอตรวจ</span></td>
+              </tr>
+
+              <tr data-date="2025-09-08" data-team="Debuggers"
+                  data-title="เว็บจัดการโครงงาน" data-type="โครงงานพิเศษ"
+                  data-status="แก้ไข" data-advisor="รศ.ดร.อนิราช มิ่งขวัญ"
+                  data-coadvisor="ผศ.พีระศักดิ์ เสรีกุล"
+                  data-objective="พัฒนาเว็บพอร์ทัลจัดการโครงงานครบวงจร"
+                  data-result="ระบบใช้งานได้จริง + รายงานส่งออก"
+                  data-scope="เวิร์กโฟลว์คำร้อง, ปฏิทินสอบ, สถิติ"
+                  data-branch="INE"
+                  data-files='[{"name":"คำขอ.pdf","url":"#"}]'>
+                <td>2025-09-08</td>
+                <td>Debuggers</td>
+                <td>เว็บจัดการโครงงาน</td>
+                <td><span class="type-badge type-project">โครงงานพิเศษ</span></td>
+                <td><span class="p p-edit">แก้ไข</span></td>
+              </tr>
+
+              <tr data-date="2025-09-14" data-team="Ts_shop"
+                  data-title="ระบบ QC บนสายการผลิต" data-type="โครงงานสหกิจ"
+                  data-status="รอสอบ" data-advisor="ผศ.สมชัย เชียงพงศ์พันธุ์"
+                  data-coadvisor="อ.ดร.ศิรินทรา แว่วศรี"
+                  data-objective="คัดกรองชิ้นงานอัตโนมัติ"
+                  data-result="แดชบอร์ด QC + แจ้งเตือน"
+                  data-scope="เก็บข้อมูล QC, วิเคราะห์, รายงาน"
+                  data-branch="ITI"
+                  data-files='[{"name":"ใบยื่นสอบ.pdf","url":"#"}]'>
+                <td>2025-09-14</td>
+                <td>Ts_shop</td>
+                <td>ระบบ QC บนสายการผลิต</td>
+                <td><span class="type-badge type-topic">โครงงานสหกิจ</span></td>
+                <td><span class="pill pill-wait">รอสอบ</span></td>
+                <td class="row-actions ta-right">
+                  <button class="btn-detail" data-action="detail">ดูรายละเอียด</button>
+                  <button class="btn-schedule" data-action="schedule">กำหนดสอบ</button>
+                </td>
+              </tr>
+              <!-- เติมข้อมูลจริงของระบบตรงนี้ได้เลย -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script defer src="../JavaScript/script.js"></script>
+</body>
+</html>
