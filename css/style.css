@@ -996,124 +996,6 @@ textarea[readonly] {
     padding: 12px 14px
 }
 
-:root {
-    --kmutnb-orange: #FF5900;
-    --border: #e6e6e6;
-    --shadow-soft: 0 12px 28px rgba(0, 0, 0, .10);
-    --radius: 18px;
-    --radius-xl: 22px;
-}
-
-/* Topbar + Layout (ย่อ) */
-body {
-    margin: 0;
-    color: #222;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "TH Sarabun New", Arial, sans-serif;
-    background: #fff
-}
-
-.topbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    height: 90px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 0 18px;
-    background: var(--kmutnb-orange);
-    border-bottom: 4px solid #d44e0b;
-    color: #fff
-}
-
-.seal {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    overflow: hidden;
-    display: grid;
-    place-items: center
-}
-
-.seal img {
-    max-width: 100%;
-    max-height: 100%
-}
-
-.kmut-text {
-    color: #fff;
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: .3px
-}
-
-.kmut-text small {
-    display: block;
-    font-weight: 500
-}
-
-.wrapper {
-    display: grid;
-    grid-template-columns: 260px 1fr;
-    min-height: calc(100vh - 90px)
-}
-
-.sidebar {
-    position: fixed;
-    top: 90px;
-    left: 0;
-    width: 260px;
-    height: calc(100vh - 90px);
-    background: #FFFCFA;
-    border-right: 1px solid #eee;
-    box-shadow: 4px 0 12px rgba(0, 0, 0, .06);
-    padding: 18px
-}
-
-.sidebar nav {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    text-align: center
-}
-
-.sidebar .menu-title {
-    font-weight: 800;
-    padding: 10px;
-    border: 1px solid rgba(244, 120, 31, .35);
-    border-radius: 12px;
-    background: linear-gradient(90deg, #FFEBDE, #fff)
-}
-
-.sidebar nav a {
-    display: block;
-    text-decoration: none;
-    color: #333;
-    font-weight: 700;
-    padding: 12px 14px;
-    border-radius: 14px;
-    background: #F8FBFF;
-    border: 1px solid rgba(0, 0, 0, .06)
-}
-
-.sidebar nav a.active,
-.sidebar nav a:hover {
-    background: linear-gradient(180deg, #ffe9db, #fff5ee);
-    border-color: rgba(244, 120, 31, .35);
-    color: #8a3d10
-}
-
-.contact {
-    margin-top: auto;
-    font-size: 13px;
-    color: #666
-}
-
-.main2 {
-    grid-column: 2/-1;
-    padding: 24px
-}
-
 /* Requests surface */
 .req-container {
     background: #fff;
@@ -1805,12 +1687,6 @@ body {
     gap: 10px;
 }
 
-@media (min-width: 768px) {
-    .comment-grid {
-        grid-template-columns: 1fr 340px;
-    }
-}
-
 /* กล่องพิมพ์ความคิดเห็น */
 .comment-input {
     min-height: 160px;
@@ -2004,19 +1880,3 @@ body {
     overflow: auto;
     z-index: 1100;
 }
-
-
-
-/* ให้รายชื่อใน dropdown เดิมของคุณสูงขึ้น คลิกง่ายขึ้น */
-.dropdown.open {
-    max-height: 280px;
-    /* เดิมเตี้ยไปหน่อย */
-    overflow: auto;
-}
-
-.dropdown .dropdown-item {
-    padding: 10px 12px;
-    /* แตะง่ายขึ้น */
-    font-size: 0.95rem;
-}
-

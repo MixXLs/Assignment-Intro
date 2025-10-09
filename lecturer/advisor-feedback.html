@@ -82,30 +82,32 @@
                         </thead>
                         <tbody>
                             <!-- ตัวอย่างแถวพร้อมไฟล์แนบ -->
-                            <tr data-date="2025-09-10" data-team="PPWO" data-title="Smart Hydroponic Monitor"
-                                data-branch="IT" data-type="โครงงานสหกิจ" data-status="กำลังทำ"
+                            <tr data-date="2025-10-03" data-team="G3" data-title="IoT Monitoring โรงงาน"
+                                data-branch="INE" data-type="โครงงานพิเศษ" data-status="รอสอบ"
                                 data-advisor="รศ.ดร.อนิราช มิ่งขวัญ"
-                                data-files='[{"name":"Proposal.pdf","url":"#"},{"name":"ภาพรวมระบบ.pptx","url":"#"}]'>
-                                <td>2025-02-10</td>
-                                <td>PPWO</td>
-                                <td>Smart Hydroponic Monitor</td>
-                                <td>IT</td>
-                                <td><span class="type-badge type-topic">โครงงานสหกิจ</span></td>
-                                <td data-col="status"><span class="pill pill-run">กำลังทำ</span></td>
+                                data-detail="ติดตั้งเซ็นเซอร์ในสายการผลิต (อุณหภูมิ, ความสั่นสะเทือน, กระแสไฟ) ส่งข้อมูลผ่าน MQTT ไปยัง Data Lake และแสดงผลบนแดชบอร์ดแบบเรียลไทม์ พร้อมแจ้งเตือนเมื่อค่าผิดปกติ"
+                                data-files='[{"name":"ใบยื่นสอบ.pdf","url":"#"},{"name":"สไลด์นำเสนอ.pptx","url":"#"}]'>
+                                <td>2025-10-03</td>
+                                <td>G3</td>
+                                <td>IoT Monitoring โรงงาน</td>
+                                <td>INE</td>
+                                <td><span class="type-badge type-project">โครงงานพิเศษ</span></td>
+                                <td data-col="status"><span class="pill pill-wait">รอสอบ</span></td>
                                 <td class="row-actions ta-right">
                                     <button class="btn-detail" data-action="open-feedback">ให้ความเห็น</button>
                                 </td>
                             </tr>
 
-                            <tr data-date="2025-09-08" data-team="Debuggers" data-title="เว็บจัดการโครงงาน"
-                                data-branch="INE" data-type="โครงงานพิเศษ" data-status="รอตรวจ"
-                                data-advisor="รศ.ดร.อนิราช มิ่งขวัญ" data-files='[{"name":"คำขอ.pdf","url":"#"}]'>
-                                <td>2025-09-08</td>
-                                <td>Debuggers</td>
-                                <td>เว็บจัดการโครงงาน</td>
+                            <tr data-date="2025-10-10" data-team="G2" data-title="AI-Based Visual QC" data-branch="INE"
+                                data-type="โครงงานสหกิจ" data-status="รออนุมัติ" data-advisor="อ.ดร.ศิรินทรา แว่วศรี"
+                                data-detail="ใช้กล้องความละเอียดสูงและโมเดลตรวจจับความบกพร่อง (defect detection) บนสายพาน แสดงผลสรุปอัตราของเสีย และสร้างรายงานรายวัน"
+                                data-files='[{"name":"คำขอ.pdf","url":"#"}]'>
+                                <td>2025-10-10</td>
+                                <td>G2</td>
+                                <td>AI-Based Visual QC</td>
                                 <td>INE</td>
-                                <td><span class="type-badge type-project">โครงงานพิเศษ</span></td>
-                                <td data-col="status"><span class="p p-wait">รอตรวจ</span></td>
+                                <td><span class="type-badge type-topic">โครงงานสหกิจ</span></td>
+                                <td data-col="status"><span class="pill pill-warn">รออนุมัติ</span></td>
                                 <td class="row-actions ta-right">
                                     <button class="btn-detail" data-action="open-feedback">ให้ความเห็น</button>
                                 </td>
@@ -149,6 +151,12 @@
                         <button class="btn-detail" id="btnOpenAll">เปิดไฟล์ทั้งหมด</button>
                     </div>
                 </div>
+                <div class="detail-section">
+                    <span class="d-label">รายละเอียดโครงงาน</span>
+                    <div class="detail-box">
+                        <p id="mDetail">-</p>
+                    </div>
+                </div>
 
                 <div class="detail-section">
                     <span class="d-label">เปอร์เซ็นต์ความสำเร็จ (0–100%)</span>
@@ -179,5 +187,72 @@
 
 
 </body>
+<script>
+    (function () {
+      const table = document.getElementById('advListTable');
+      const modal = document.getElementById('fbModal');
+      const openAllBtn = document.getElementById('btnOpenAll');
 
+      function openModal() { modal.setAttribute('aria-hidden', 'false'); }
+      function closeModal() { modal.setAttribute('aria-hidden', 'true'); }
+
+      document.getElementById('fbClose').addEventListener('click', closeModal);
+      document.getElementById('fbCancel').addEventListener('click', closeModal);
+
+      table.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action="open-feedback"]');
+        if (!btn) return;
+        const tr = btn.closest('tr');
+        // เติมข้อมูลพื้นฐาน
+        document.getElementById('mTeam').textContent = tr.dataset.team || '-';
+        document.getElementById('mBranch').textContent = tr.dataset.branch || '-';
+        document.getElementById('mTitle').textContent = tr.dataset.title || '-';
+        document.getElementById('mDetail').textContent = tr.dataset.detail || '-';
+
+        // ไฟล์แนบ
+        const list = document.getElementById('mFiles');
+        list.innerHTML = '';
+        try {
+          const files = JSON.parse(tr.dataset.files || '[]');
+          files.forEach(f => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = f.url || '#'; a.textContent = f.name || 'ไฟล์';
+            li.appendChild(a); list.appendChild(li);
+          });
+          openAllBtn.onclick = () => files.forEach(f => f.url && window.open(f.url, '_blank'));
+        } catch { list.innerHTML = ''; openAllBtn.onclick = null; }
+
+        openModal();
+      });
+
+      // ปุ่มสถานะ (ตัวอย่างแสดงผลทันทีที่แถว)
+      function setStatus(tr, html, statusText) {
+        const st = tr.querySelector('[data-col="status"]');
+        if (st) st.innerHTML = html;
+        tr.dataset.status = statusText;
+      }
+      document.getElementById('btnApprove').addEventListener('click', () => {
+        const tr = document.querySelector('#advListTable tr[data-team="' + document.getElementById('mTeam').textContent + '"]');
+        if (tr) setStatus(tr, '<span class="p p-ok">ผ่าน</span>', 'อนุมัติ');
+        closeModal();
+      });
+      document.getElementById('btnApproveEdit').addEventListener('click', () => {
+        const tr = document.querySelector('#advListTable tr[data-team="' + document.getElementById('mTeam').textContent + '"]');
+        if (tr) setStatus(tr, '<span class="p p-edit">แก้ไข</span>', 'แก้ไข');
+        closeModal();
+      });
+      document.getElementById('btnReject').addEventListener('click', () => {
+        const tr = document.querySelector('#advListTable tr[data-team="' + document.getElementById('mTeam').textContent + '"]');
+        if (tr) setStatus(tr, '<span class="p p-no">ไม่ผ่าน</span>', 'ไม่ผ่าน');
+        closeModal();
+      });
+
+      // บันทึกความเห็น (เดโม)
+      document.getElementById('fbSave').addEventListener('click', () => {
+        document.getElementById('mSaved').style.display = 'block';
+        setTimeout(() => { document.getElementById('mSaved').style.display = 'none'; }, 1500);
+      });
+    })();
+  </script>
 </html>

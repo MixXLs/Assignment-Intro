@@ -94,13 +94,14 @@
                         </thead>
                         <tbody>
                             <!-- 2025-10-03  IoT Monitoring โรงงาน  ปัณณทัต ทองคำชุม  รอสอบ  INE  กำหนด 2025-11-01  เอกสารครบ -->
-                            <tr data-date="2025-10-03" data-team="ปัณณทัต ทองคำชุม" data-title="IoT Monitoring โรงงาน"
+                            <tr data-date="2025-10-03" data-team="G3" data-title="IoT Monitoring โรงงาน"
                                 data-branch="INE" data-type="โครงงานพิเศษ" data-status="รอสอบ"
                                 data-advisor="รศ.ดร.อนิราช มิ่งขวัญ" data-coadvisor="อ.ดร.ประดิษฐ์ พิทักษ์เสถียรกุล"
                                 data-duedate="2025-11-01" data-docs="ok"
+                                data-detail="ติดตั้งเซ็นเซอร์ (อุณหภูมิ/สั่นสะเทือน/กระแสไฟ) ตามจุดสำคัญของสายการผลิต ส่งข้อมูลผ่าน MQTT → Time-series DB และแสดงผลแดชบอร์ดเรียลไทม์ พร้อมการแจ้งเตือนเมื่อเกินเกณฑ์"
                                 data-files='[{"name":"ใบยื่นสอบ.pdf","url":"#"}]'>
                                 <td>2025-10-03</td>
-                                <td>ปัณณทัต ทองคำชุม</td>
+                                <td>G3</td>
                                 <td>IoT Monitoring โรงงาน</td>
                                 <td>INE</td>
                                 <td><span class="type-badge type-project">โครงงานพิเศษ</span></td>
@@ -111,14 +112,14 @@
                             </tr>
 
                             <!-- 2025-10-10  Smart Hydroponic Monitor (INE)  กลุ่ม G2  รออนุมัติ  INE  กำหนด 2025-10-22  ยังไม่ส่ง -->
-                            <tr data-date="2025-10-10" data-team="กลุ่ม G2" data-title="Smart Hydroponic Monitor (INE)"
-                                data-branch="INE" data-type="โครงงานสหกิจ" data-status="รออนุมัติ"
-                                data-advisor="อ.ดร.ศิรินทรา แว่วศรี" data-coadvisor="ผศ.พีระศักดิ์ เสรีกุล"
-                                data-duedate="2025-10-22" data-docs="missing"
+                            <tr data-date="2025-10-10" data-team="G2" data-title="AI-Based Visual QC" data-branch="INE"
+                                data-type="โครงงานสหกิจ" data-status="รออนุมัติ" data-advisor="อ.ดร.ศิรินทรา แว่วศรี"
+                                data-coadvisor="ผศ.พีระศักดิ์ เสรีกุล" data-duedate="2025-10-22" data-docs="missing"
+                                data-detail="ใช้กล้องไลน์สแกนความละเอียดสูงและโมเดลตรวจจับจุดบกพร่อง (defect detection) เพื่อคัด Type ของเสีย ออกรีพอร์ตสรุปอัตราของเสียรายวัน/รายล็อต ส่งต่อผู้ควบคุมคุณภาพ"
                                 data-files='[{"name":"คำขอ.pdf","url":"#"}]'>
                                 <td>2025-10-10</td>
-                                <td>กลุ่ม G2</td>
-                                <td>Smart Hydroponic Monitor (INE)</td>
+                                <td>G2</td>
+                                <td>AI-Based Visual QC</td>
                                 <td>INE</td>
                                 <td><span class="type-badge type-topic">โครงงานสหกิจ</span></td>
                                 <td data-col="status"><span class="pill pill-warn">รออนุมัติ</span></td>
@@ -166,10 +167,11 @@
                         <button class="btn-detail" id="btnOpenAll">เปิดไฟล์ทั้งหมด</button>
                     </div>
                 </div>
-
                 <div class="detail-section">
-                    <span class="d-label">เปอร์เซ็นต์ความสำเร็จ (0–100%)</span>
-                    <input id="mPercent" class="input" type="number" min="0" max="100" step="1" placeholder="เช่น 65" />
+                    <span class="d-label">รายละเอียดโครงงาน</span>
+                    <div class="detail-box">
+                        <p id="mDetail">-</p>
+                    </div>
                 </div>
 
                 <div class="detail-section">
@@ -177,17 +179,11 @@
                     <textarea id="mComment" class="textarea" placeholder="เขียนข้อเสนอแนะให้ทีม"></textarea>
                 </div>
 
-                <div id="mError" class="notify-panel"
-                    style="display:none;color:#8a1f1f;background:#fff3f3;border-color:#ffc3c3;">
-                    ⚠ กรุณากรอกเปอร์เซ็นต์ให้ถูกต้อง (0–100)
-                </div>
                 <div id="mSaved" class="notify-panel" style="display:none;">✅ บันทึกเรียบร้อย</div>
             </div>
 
             <div class="modal-footer">
-                <button class="btn-reject" id="btnReject">ไม่ผ่าน</button>
-                <button class="btn-detail" id="btnApproveEdit">ผ่านแต่แก้ไข</button>
-                <button class="btn-schedule" id="btnApprove">ผ่าน</button>
+
                 <button class="btn-cancel" id="fbCancel">ยกเลิก</button>
                 <button class="btn-save" id="fbSave">บันทึกความเห็น</button>
             </div>
@@ -195,5 +191,59 @@
     </div>
 
 </body>
+<script>
+    (function () {
+        const table = document.getElementById('advListTable');
+        const modal = document.getElementById('fbModal');
+        const openAllBtn = document.getElementById('btnOpenAll');
+
+        const elTeam = document.getElementById('mTeam');
+        const elBranch = document.getElementById('mBranch');
+        const elTitle = document.getElementById('mTitle');
+        const elDetail = document.getElementById('mDetail');
+        const elFiles = document.getElementById('mFiles');
+
+        function openModal() { modal.setAttribute('aria-hidden', 'false'); }
+        function closeModal() { modal.setAttribute('aria-hidden', 'true'); }
+        document.getElementById('fbClose').addEventListener('click', closeModal);
+        document.getElementById('fbCancel').addEventListener('click', closeModal);
+
+        table.addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-action="open-feedback"]');
+            if (!btn) return;
+            const tr = btn.closest('tr');
+
+            // ข้อมูลหัวโมดัล
+            elTeam.textContent = tr.dataset.team || '-';
+            elBranch.textContent = tr.dataset.branch || '-';
+            elTitle.textContent = tr.dataset.title || '-';
+
+            // รายละเอียดโครงงาน
+            elDetail.textContent = tr.dataset.detail || '-';
+
+            // ไฟล์แนบ
+            elFiles.innerHTML = '';
+            let files = [];
+            try { files = JSON.parse(tr.dataset.files || '[]'); } catch { }
+            files.forEach(f => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = f.url || '#'; a.textContent = f.name || 'ไฟล์';
+                a.target = '_blank';
+                li.appendChild(a); elFiles.appendChild(li);
+            });
+            openAllBtn.onclick = () => files.forEach(f => f.url && window.open(f.url, '_blank'));
+
+            openModal();
+        });
+
+        // เดโมบันทึกความเห็น
+        document.getElementById('fbSave').addEventListener('click', () => {
+            const saved = document.getElementById('mSaved');
+            saved.style.display = 'block';
+            setTimeout(() => saved.style.display = 'none', 1500);
+        });
+    })();
+</script>
 
 </html>
