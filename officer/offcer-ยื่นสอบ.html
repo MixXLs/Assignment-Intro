@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="th">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,7 +12,7 @@
   <!-- Topbar -->
   <div class="topbar">
     <div class="seal">
-      <a href="../index.html"><img src="../images/kmutnb_logo.png" alt="KMUTNB Logo"></a>
+      <a href="../index.html"><img src="../images/kmutnb_logo.png" alt="KMUTNB Logo" /></a>
     </div>
     <div class="kmut-text">
       KING MONGKUT'S UNIVERSITY OF TECHNOLOGY NORTH BANGKOK
@@ -29,8 +28,9 @@
         <a href="officer-dashboard.html">แดชบอร์ด</a>
         <a href="#" class="active">จัดการคำร้องโครงงาน</a>
       </nav>
+
       <div class="contact">
-        <div class="gear-icons"><img src="../images/gear_red.png" alt="gear"></div>
+        <div class="gear-icons"><img src="../images/gear_red.png" alt="gear" /></div>
         <div>กรณีที่พบปัญหาการใช้งาน</div>
         <div>ติดต่อได้ที่ 02-555-2000</div>
         <div>กลุ่มงานทะเบียนฯ ต่อ 1628-1635</div>
@@ -47,20 +47,16 @@
 
         <!-- Tabs -->
         <div class="req-tabs" role="tablist" aria-label="ชนิดคำร้อง">
-          <button class="req-tab active" data-tab="topic" aria-selected="true">คำร้องยื่นสอบหัวข้อ</button>
-          <button class="req-tab" data-tab="project" aria-selected="false">คำร้องยื่นสอบโปรเจคต์</button>
+          <button class="req-tab active" id="tabbtn-topic" data-tab="topic" role="tab" aria-selected="true" aria-controls="tab-topic">คำร้องยื่นสอบหัวข้อ</button>
+          <button class="req-tab" id="tabbtn-project" data-tab="project" role="tab" aria-selected="false" aria-controls="tab-project">คำร้องยื่นสอบโปรเจคต์</button>
         </div>
 
         <!-- TAB: คำร้องยื่นสอบหัวข้อ -->
-        <section id="tab-topic" class="req-card" role="tabpanel">
+        <section id="tab-topic" class="req-card" role="tabpanel" aria-labelledby="tabbtn-topic">
           <div class="req-toolbar">
             <input id="topicSearch" class="req-search" type="search" placeholder="ค้นหากลุ่ม/หัวข้อ/อาจารย์…" />
             <div class="req-filters-2">
-              <select id="topicKind" class="req-select">
-                <option value="">ทุกประเภท</option>
-                <option value="โครงงานพิเศษ">โครงงานพิเศษ</option>
-                <option value="โครงงานสหกิจ">โครงงานสหกิจ</option>
-              </select>
+              <!-- script.js ใช้เฉพาะ topicStatus แต่อยู่คู่กับช่องนี้ให้สมบูรณ์ -->
               <select id="topicStatus" class="req-select">
                 <option value="">ทั้งหมด (สถานะ)</option>
                 <option value="รอตรวจ">รอตรวจ</option>
@@ -70,11 +66,15 @@
                 <option value="รอสอบ">รอสอบ</option>
                 <option value="กำลังทำ">กำลังทำ</option>
               </select>
+              <select class="req-select" disabled>
+                <option>—</option>
+              </select>
             </div>
           </div>
 
           <div class="req-table-wrap">
-            <table class="req-table">
+            <!-- ต้องเป็น table#topicTable เพื่อให้ script เลือก #topicTable tbody tr ได้ -->
+            <table class="req-table" id="topicTable">
               <thead>
                 <tr>
                   <th>วันที่</th>
@@ -86,11 +86,23 @@
                   <th class="ta-right">การดำเนินการ</th>
                 </tr>
               </thead>
-              <tbody id="topicTable">
-                <tr data-status="รอตรวจ" data-type="โครงงานสหกิจ" data-branch="IT" data-date="2025-09-10"
-                  data-team="PPWO" data-title="Smart Hydroponic Monitor" data-advisor="ผศ.ดร.บีสุดา ดาวเรือง"
-                  data-coadvisor="ผศ.พีระศักดิ์ เสรีกุล" data-objective="ตรวจสอบคุณภาพน้ำไฮโดรโปนิกส์แบบเรียลไทม์"
-                  data-result="ต้นแบบ IoT + แดชบอร์ดใช้งานจริง" data-scope="ตรวจวัด pH/EC, ควบคุมปั๊ม, แจ้งเตือนมือถือ"
+              <tbody>
+                <!-- ตัวอย่างแถว -->
+                <tr
+                  data-status="รอตรวจ"
+                  data-type="โครงงานสหกิจ"
+                  data-branch="IT"
+                  data-date="2025-09-10"
+                  data-team="PPWO"
+                  data-title="Smart Hydroponic Monitor"
+                  data-advisor="ผศ.ดร.บีสุดา ดาวเรือง"
+                  data-coadvisor="ผศ.พีระศักดิ์ เสรีกุล"
+                  data-objective="ตรวจสอบคุณภาพน้ำปลูกผักแบบเรียลไทม์ ลดต้นทุนและความผิดพลาด"
+                  data-result="ต้นแบบ IoT + แดชบอร์ดใช้งานจริง"
+                  data-scope="วัด pH/EC, ควบคุมปั๊ม, แจ้งเตือนผ่านมือถือ"
+                  data-students1="6806022610097 นายปภังกร สุวรรณรัตน์"
+                  data-students2="6806022610186 นายอคิราภ์ สมัครจิตร์"
+                  data-students='["6806022610097 นายปภังกร สุวรรณรัตน์","6806022610186 นายอคิราภ์ สมัครจิตร์"]'
                   data-files='[{"name":"คำขอ.pdf","url":"#"},{"name":"สรุปโครงร่าง.docx","url":"#"}]'>
                   <td>2025-09-10</td>
                   <td>PPWO</td>
@@ -104,11 +116,22 @@
                   </td>
                 </tr>
 
-                <tr data-status="แก้ไข" data-type="โครงงานพิเศษ" data-branch="INE" data-date="2025-09-08"
-                  data-team="Debuggers" data-title="เว็บจัดการโครงงาน" data-advisor="ผศ.ดร.นิติการ นาคเจือทอง"
-                  data-coadvisor="ผศ.พีระศักดิ์ เสรีกุล" data-objective="พอร์ทัลจัดการโครงงานครบวงจรของสาขา INE"
-                  data-result="ระบบใช้งานได้จริง + Export รายงาน"
-                  data-scope="เวิร์กโฟลว์, ปฏิทินสอบ, สถิติ, อัปโหลดไฟล์" data-files='[{"name":"คำขอ.pdf","url":"#"}]'>
+                <tr
+                  data-status="แก้ไข"
+                  data-type="โครงงานพิเศษ"
+                  data-branch="INE"
+                  data-date="2025-09-08"
+                  data-team="Debuggers"
+                  data-title="เว็บจัดการโครงงาน"
+                  data-advisor="ผศ.ดร.นิติการ นาคเจือทอง"
+                  data-coadvisor="ผศ.พีระศักดิ์ เสรีกุล"
+                  data-objective="พัฒนาพอร์ทัลจัดการโครงงานครบวงจรสำหรับสาขา INE"
+                  data-result="ระบบใช้งานได้จริง + ออกรายงาน"
+                  data-scope="งานเวิร์กโฟลว์, ปฏิทินสอบ, สถิติ, อัปโหลดไฟล์"
+                  data-students1="6806022610097 นายปภังกร สุวรรณรัตน์"
+                  data-students2="6806022610186 นายอคิราภ์ สมัครจิตร์"
+                  data-students='["6806022610097 นายปภังกร สุวรรณรัตน์","6806022610186 นายอคิราภ์ สมัครจิตร์"]'
+                  data-files='[{"name":"คำขอ.pdf","url":"#"}]'>
                   <td>2025-09-08</td>
                   <td>Debuggers</td>
                   <td>เว็บจัดการโครงงาน</td>
@@ -120,49 +143,31 @@
                     <button class="btn-schedule" data-action="schedule">กำหนดสอบ</button>
                   </td>
                 </tr>
-
-                <tr data-status="รอสอบ" data-type="โครงงานสหกิจ" data-branch="ITI" data-date="2025-09-14"
-                  data-team="Ts_shop" data-title="ระบบ QC บนสายการผลิต" data-advisor="ผศ.สมชัย เชียงพงศ์พันธุ์"
-                  data-coadvisor="อ.ดร.ศิรินทรา แว่วศรี" data-objective="คัดกรองชิ้นงานอัตโนมัติ"
-                  data-result="แดชบอร์ด QC + แจ้งเตือน" data-scope="เก็บข้อมูล QC, วิเคราะห์, รายงาน"
-                  data-files='[{"name":"เอกสารยื่นสอบ.pdf","url":"#"}]'>
-                  <td>2025-09-14</td>
-                  <td>Ts_shop</td>
-                  <td>ระบบ QC บนสายการผลิต</td>
-                  <td><span class="type-badge type-topic">โครงงานสหกิจ</span></td>
-                  <td>ผศ.สมชัย เชียงพงศ์พันธุ์</td>
-                  <td data-col="status"><span class="pill pill-wait">รอสอบ</span></td>
-                  <td class="row-actions ta-right">
-                    <button class="btn-soft" data-action="detail">ดูรายละเอียด</button>
-                    <button class="btn-schedule" data-action="schedule">กำหนดสอบ</button>
-                  </td>
-                </tr>
               </tbody>
             </table>
           </div>
         </section>
 
         <!-- TAB: คำร้องยื่นสอบโปรเจคต์ -->
-        <section id="tab-project" class="req-card" role="tabpanel" hidden>
+        <section id="tab-project" class="req-card" role="tabpanel" aria-labelledby="tabbtn-project" hidden>
           <div class="req-toolbar">
             <input id="projSearch" class="req-search" type="search" placeholder="ค้นหาโครงงาน/นักศึกษา…" />
             <div class="req-filters-2">
-              <select id="projKind" class="req-select">
-                <option value="">ทุกประเภท</option>
-                <option value="โครงงานพิเศษ">โครงงานพิเศษ</option>
-                <option value="โครงงานสหกิจ">โครงงานสหกิจ</option>
-              </select>
               <select id="projStatus" class="req-select">
                 <option value="">สถานะทั้งหมด</option>
                 <option value="รออนุมัติ">รออนุมัติ</option>
                 <option value="อนุมัติ">อนุมัติ</option>
                 <option value="ไม่ผ่าน">ไม่ผ่าน</option>
               </select>
+              <select class="req-select" disabled>
+                <option>—</option>
+              </select>
             </div>
           </div>
 
           <div class="req-table-wrap">
-            <table class="req-table">
+            <!-- ต้องเป็น table#projTable เพื่อให้ script เลือก #projTable tbody tr ได้ -->
+            <table class="req-table" id="projTable">
               <thead>
                 <tr>
                   <th>วันที่</th>
@@ -171,14 +176,23 @@
                   <th>ประเภท</th>
                   <th>อาจารย์ที่ปรึกษา</th>
                   <th data-col="status">สถานะ</th>
-                  <th>การจัดการ</th>
+                  <th class="ta-right">การดำเนินการ</th>
                 </tr>
               </thead>
-              <tbody id="projTable">
-                <tr data-status="รออนุมัติ" data-type="โครงงานพิเศษ" data-branch="INET" data-date="2025-09-03"
-                  data-team="Book_BBB" data-title="ระบบเช่าหนังสือ" data-advisor="รศ.ดร.อนิราช มิ่งขวัญ"
-                  data-coadvisor="ผศ.ดร.พาฝัน ดวงไพศาล" data-objective="ระบบเช่าหนังสือแบบเรียลไทม์"
-                  data-result="ต้นแบบพร้อมฐานข้อมูล" data-scope="จัดการหนังสือ/สมาชิก/ยืมคืน"
+              <tbody>
+                <tr
+                  data-status="รออนุมัติ"
+                  data-type="โครงงานพิเศษ"
+                  data-branch="INET"
+                  data-date="2025-09-03"
+                  data-team="Book_BBB"
+                  data-title="ระบบเช่าหนังสือ"
+                  data-advisor="รศ.ดร.อนิราช มิ่งขวัญ"
+                  data-coadvisor="ผศ.ดร.พาฝัน ดวงไพศาล"
+                  data-objective="สร้างระบบเช่าหนังสือแบบเรียลไทม์"
+                  data-result="ต้นแบบพร้อมฐานข้อมูล"
+                  data-scope="จัดการหนังสือ/สมาชิก/ยืม-คืน"
+                  data-students='["6806022610097 นายปภังกร สุวรรณรัตน์","6806022610186 นายอคิราภ์ สมัครจิตร์"]'
                   data-files='[{"name":"requirements.pdf","url":"#"}]'>
                   <td>2025-09-03</td>
                   <td>Book_BBB</td>
@@ -186,15 +200,25 @@
                   <td><span class="type-badge type-project">โครงงานพิเศษ</span></td>
                   <td>รศ.ดร.อนิราช มิ่งขวัญ</td>
                   <td data-col="status"><span class="pill pill-warn">รออนุมัติ</span></td>
-                  <td>
+                  <td class="ta-right">
                     <button class="btn-detail" data-action="detail">ดูรายละเอียด</button>
                     <button class="btn-schedule" data-action="schedule">กำหนดสอบ</button>
                   </td>
                 </tr>
-                <tr data-status="รออนุมัติ" data-type="โครงงานสหกิจ" data-branch="INE" data-date="2025-09-07"
-                  data-team="CarTrade" data-title="ระบบซื้อขายรถออนไลน์" data-advisor="รศ.ดร.อนิราช มิ่งขวัญ"
-                  data-coadvisor="ผศ.ดร.พาฝัน ดวงไพศาล" data-objective="ซื้อขายรถมือหนึ่ง/มือสอง"
-                  data-result="เว็บแอปต้นแบบ" data-scope="ผู้ใช้/ลงประกาศ/ค้นหา/แชท"
+
+                <tr
+                  data-status="รออนุมัติ"
+                  data-type="โครงงานสหกิจ"
+                  data-branch="INE"
+                  data-date="2025-09-07"
+                  data-team="CarTrade"
+                  data-title="ระบบซื้อขายรถออนไลน์"
+                  data-advisor="รศ.ดร.อนิราช มิ่งขวัญ"
+                  data-coadvisor="ผศ.ดร.พาฝัน ดวงไพศาล"
+                  data-objective="แพลตฟอร์มซื้อขายรถมือหนึ่ง/มือสอง"
+                  data-result="เว็บแอปต้นแบบ"
+                  data-scope="ผู้ใช้/ลงประกาศ/ค้นหา/แชท"
+                  data-students='["6806022610097 นายปภังกร สุวรรณรัตน์","6806022610186 นายอคิราภ์ สมัครจิตร์"]'
                   data-files='[{"name":"design.docx","url":"#"}]'>
                   <td>2025-09-07</td>
                   <td>CarTrade</td>
@@ -202,7 +226,7 @@
                   <td><span class="type-badge type-coop">โครงงานสหกิจ</span></td>
                   <td>รศ.ดร.อนิราช มิ่งขวัญ</td>
                   <td data-col="status"><span class="pill pill-warn">รออนุมัติ</span></td>
-                  <td>
+                  <td class="ta-right">
                     <button class="btn-detail" data-action="detail">ดูรายละเอียด</button>
                     <button class="btn-schedule" data-action="schedule">กำหนดสอบ</button>
                   </td>
@@ -216,103 +240,128 @@
   </div>
 
   <!-- Modal: รายละเอียด -->
-  <div class="modal" id="reqDetail" aria-hidden="true">
+  <div class="modal" id="reqDetail" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal-dialog modal-sm">
       <div class="modal-header">
         <strong id="reqTitle">รายละเอียดคำร้อง</strong>
         <button class="modal-close" id="detailClose" aria-label="ปิด">×</button>
       </div>
+
       <div class="modal-body">
         <div class="detail-grid">
-          <div><span class="d-label">ชนิดคำร้อง</span>
+          <div>
+            <span class="d-label">ชนิดคำร้อง</span>
             <div id="dType" class="d-value">-</div>
           </div>
-          <div><span class="d-label">วันที่ยื่น</span>
+          <div>
+            <span class="d-label">วันที่ยื่น</span>
             <div id="dDate" class="d-value">-</div>
           </div>
-          <div><span class="d-label">กลุ่ม</span>
+          <div>
+            <span class="d-label">กลุ่ม</span>
             <div id="dTeam" class="d-value">-</div>
           </div>
-          <div><span class="d-label">สาขาวิชา</span>
+          <div>
+            <span class="d-label">สาขาวิชา</span>
             <div id="dBranch" class="d-value">-</div>
           </div>
-          <div><span class="d-label">อาจารย์ที่ปรึกษา</span>
+
+          <!-- รายชื่อนักศึกษา -->
+          <div class="full detail-section">
+            <span class="d-label">รายชื่อนักศึกษา</span>
+            <p id="dStudents1" class="d-value">-</p><br>
+            <p id="dStudents2" class="d-value">-</p>
+          </div>
+
+          <div>
+            <span class="d-label">อาจารย์ที่ปรึกษา</span>
             <div id="dAdvisor" class="d-value">-</div>
           </div>
-          <div><span class="d-label">อาจารย์ที่ปรึกษาร่วม</span>
+          <div>
+            <span class="d-label">อาจารย์ที่ปรึกษาร่วม</span>
             <div id="dCoadvisor" class="d-value">-</div>
           </div>
-          <div class="full"><span class="d-label">หัวข้อ/โปรเจคต์</span>
+          <div class="full">
+            <span class="d-label">หัวข้อ/โปรเจคต์</span>
             <div id="dTopic" class="d-value">-</div>
           </div>
+
+          <div class="full detail-section">
+            <span class="d-label">วัตถุประสงค์</span>
+            <p id="dObjective">-</p>
+          </div>
+
+          <div class="full detail-section">
+            <span class="d-label">ขอบเขตโครงงาน</span>
+            <p id="dScope">-</p>
+          </div>
+
+          <div class="full detail-files">
+            <div class="d-label">ไฟล์เอกสารแนบ</div>
+            <ul id="dFiles" class="file-list"></ul>
+          </div>
         </div>
-        <div class="detail-section"><span class="d-label">วัตถุประสงค์</span>
-          <p id="dObjective">-</p>
+
+        <div class="modal-footer">
+          <button class="btn-cancel" id="detailCancel">ปิด</button>
+          <button class="btn-reject" id="btnReject">ไม่ผ่าน</button>
+          <button class="btn-detail" id="btnApproveEdit">ผ่านแต่แก้ไข</button>
+          <button class="btn-schedule" id="btnApprove">อนุมัติ</button>
         </div>
-        <div class="detail-section"><span class="d-label">ผลลัพธ์ที่คาดหวัง</span>
-          <p id="dResult">-</p>
-        </div>
-        <div class="detail-section"><span class="d-label">ขอบเขตโครงงาน</span>
-          <p id="dScope">-</p>
-        </div>
-        <div class="detail-files">
-          <div class="d-label">ไฟล์เอกสารแนบ</div>
-          <ul id="dFiles" class="file-list"></ul>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-cancel" id="detailCancel">ปิด</button>
-        <button class="btn-reject" id="btnReject">ไม่ผ่าน</button>
-        <button class="btn-detail" id="btnApproveEdit">ผ่านแต่แก้ไข</button>
-        <button class="btn-schedule" id="btnApprove">อนุมัติ</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal: กำหนดสอบ (พร้อมกรรมการ 3 คน) -->
-  <div class="modal" id="scheduleModal" aria-hidden="true">
+  <!-- Modal: กำหนดสอบ (แยก modal คนละตัว) -->
+  <div class="modal" id="scheduleModal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-header">
         <strong>กำหนดสอบ</strong>
         <button class="modal-close" id="scheduleClose" aria-label="ปิด">×</button>
       </div>
+
       <div class="modal-body">
         <div class="form-row">
-          <label>วันสอบ</label>
+          <label for="examDate">วันสอบ</label>
           <input type="date" id="examDate" class="input" />
         </div>
         <div class="form-row">
-          <label>เวลา</label>
+          <label for="examTime">เวลา</label>
           <input type="time" id="examTime" class="input" />
         </div>
         <div class="form-row">
-          <label>ห้องสอบ</label>
+          <label for="examRoom">ห้องสอบ</label>
           <input type="text" id="examRoom" class="input" placeholder="เช่น ห้อง 401" />
         </div>
 
         <div class="form-row-3">
           <div class="teacher-select">
-            <label>ประธาน</label>
-            <input type="text" id="committee1Input" class="input" placeholder="ประธาน" autocomplete="off" />
-            <div id="committee1List" class="dropdown"></div>
+            <label for="committee1Input">ประธาน</label>
+            <!-- ล็อกไม่ให้พิมพ์หรือเลือก -->
+            <input type="text" id="committee1Input" class="input" placeholder="กำหนดโดยระบบ" disabled aria-readonly="true" />
+            <div id="committee1List" class="dropdown" hidden></div>
           </div>
+
           <div class="teacher-select">
-            <label>กรรมการสอบ 1</label>
+            <label for="committee2Input">กรรมการสอบ 1</label>
             <input type="text" id="committee2Input" class="input" placeholder="พิมพ์ชื่ออาจารย์…" autocomplete="off" />
             <div id="committee2List" class="dropdown"></div>
           </div>
+
           <div class="teacher-select">
-            <label>กรรมการสอบ 2</label>
+            <label for="committee3Input">กรรมการสอบ 2</label>
             <input type="text" id="committee3Input" class="input" placeholder="พิมพ์ชื่ออาจารย์…" autocomplete="off" />
             <div id="committee3List" class="dropdown"></div>
           </div>
+
           <div class="teacher-select">
-            <label>กรรมการสอบ 3</label>
+            <label for="committee4Input">กรรมการสอบ 3</label>
             <input type="text" id="committee4Input" class="input" placeholder="พิมพ์ชื่ออาจารย์…" autocomplete="off" />
             <div id="committee4List" class="dropdown"></div>
           </div>
         </div>
       </div>
+
       <div class="modal-footer">
         <button class="btn-cancel" id="btnCancelSchedule">ยกเลิก</button>
         <button class="btn-save" id="btnSaveSchedule">บันทึก</button>

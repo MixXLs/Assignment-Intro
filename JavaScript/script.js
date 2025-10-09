@@ -233,7 +233,7 @@ function initExamSubmit() {
     const c3 = val("committee3Input");
     const c4 = val("committee4Input");
 
-    // ต้องมีที่ปรึกษา + กรรมการอย่างน้อย 2
+    // ต้องมีที่ปรึกษา + กรรมการอย่างน้อย 3 คน
     if (!advisor || !c1 || !c2) {
       show(examError); text(examError, "⚠ กรุณากรอกอาจารย์ที่ปรึกษา และกรรมการอย่างน้อย 3 คน");
       hide(examSuccess); return;
@@ -247,7 +247,7 @@ function initExamSubmit() {
 
     hide(examError); show(examSuccess);
     localStorage.setItem("exam_advisor", advisor);
-    localStorage.setItem("exam_committee", JSON.stringify([c1, c2, c3].filter(Boolean)));
+    localStorage.setItem("exam_committee", JSON.stringify([c1, c2, c3, c4].filter(Boolean)));
   });
 }
 
@@ -418,6 +418,23 @@ function initOfficerRequests() {
       if (el) el.textContent = v || "-";
     });
 
+    // --- Students (รองรับ data-students JSON และ data-students1/2/...) ---
+    let list = safeParseJSON(row.dataset.students, null);
+    if (!Array.isArray(list)) {
+      list = [];
+      for (const name of row.getAttributeNames()) {
+        if (/^data-students\d*$/i.test(name)) {
+          const v = row.getAttribute(name);
+          if (v && v.trim()) list.push(v.trim());
+        }
+      }
+    }
+    // เติมลง #dStudents1 / #dStudents2 (ตาม HTML ล่าสุด)
+    const s1 = $("#dStudents1"), s2 = $("#dStudents2");
+    if (s1) s1.textContent = list[0] || "-";
+    if (s2) s2.textContent = list[1] || (list[0] ? "" : "-");
+
+    // ไฟล์แนบ
     const files = safeParseJSON(row.dataset.files, []);
     const ul = $("#dFiles");
     if (ul) {
@@ -436,11 +453,14 @@ function initOfficerRequests() {
     }
   }
 
+  // เก็บแถวปัจจุบันของหน้ารายละเอียดเพื่อใช้กด อนุมัติ/แก้ไข/ไม่ผ่าน
+  let currentRowDetail = null;
+
   document.addEventListener("click", (e) => {
     const btnDetail = e.target.closest("[data-action=detail]");
     if (btnDetail) {
       const row = btnDetail.closest("tr");
-      if (row) { fillDetail(row); open(detailModal); }
+      if (row) { currentRowDetail = row; fillDetail(row); open(detailModal); }
       return;
     }
     const btnSched = e.target.closest("[data-action=schedule]");
@@ -451,22 +471,97 @@ function initOfficerRequests() {
           date: row.dataset.date, team: row.dataset.team, title: row.dataset.title,
           advisor: row.dataset.advisor, branch: row.dataset.branch
         }));
+        // เติมชื่อประธานลงช่อง (ถ้ามีค่า) — ช่องถูก disabled อยู่แล้ว
+        const chair = $("#committee1Input");
+        if (chair) chair.value = row.dataset.advisor || "";
         open(scheduleModal);
       }
     }
   });
 
-  btnSaveSchedule?.addEventListener("click", () => {
-    const d = $("#examDate")?.value;
-    const t = $("#examTime")?.value;
-    const r = $("#examRoom")?.value?.trim();
-    if (!d || !t || !r) { alert("กรุณากรอก วันสอบ / เวลา / ห้องสอบ ให้ครบ"); return; }
-    const target = LS.get("schedule_target", null);
-    const payload = { ...target, examDate: d, examTime: t, room: r, savedAt: new Date().toISOString() };
-    LS.set("schedule_last_saved", payload);
-    alert(`บันทึกกำหนดสอบแล้ว\nทีม/หัวข้อ: ${payload?.team || "-"} / ${payload?.title || "-"}\nวันที่: ${d}\nเวลา: ${t}\nห้อง: ${r}`);
-    close(scheduleModal);
-  });
+  // ปุ่มสถานะในโมดัลรายละเอียด (ผูกครั้งเดียว)
+  function bindOnce(el, ev, handler, flagName) {
+    if (!el || el.dataset[flagName]) return;
+    el.dataset[flagName] = "1";
+    el.addEventListener(ev, handler);
+  }
+  const btnApprove = $("#btnApprove");
+  const btnApproveEdit = $("#btnApproveEdit");
+  const btnReject = $("#btnReject");
+  const mapHTML = {
+    "อนุมัติ": '<span class="p p-ok">อนุมัติ</span>',
+    "แก้ไข": '<span class="p p-edit">แก้ไข</span>',
+    "ไม่ผ่าน": '<span class="p p-no">ไม่ผ่าน</span>'
+  };
+  function setRowStatus(row, statusText) {
+    if (!row) return;
+    row.dataset.status = statusText;
+    const td = row.querySelector('td[data-col="status"]');
+    if (td) td.innerHTML = mapHTML[statusText] || statusText;
+    // จำค่าลง localStorage ตามทีม/หัวข้อ
+    const team = row.dataset.team || "-";
+    const title = row.dataset.title || "-";
+    LS.set(`officer_status__${team}__${title}`, { status: statusText, updatedAt: new Date().toISOString() });
+    // ปิดโมดัล
+    detailModal?.setAttribute("aria-hidden", "true");
+  }
+  bindOnce(btnApprove, "click", () => setRowStatus(currentRowDetail, "อนุมัติ"), "bound");
+  bindOnce(btnApproveEdit, "click", () => setRowStatus(currentRowDetail, "แก้ไข"), "bound");
+  bindOnce(btnReject, "click", () => setRowStatus(currentRowDetail, "ไม่ผ่าน"), "bound");
+
+  // === บันทึกกำหนดสอบ ===
+  // กำหนดสอบ: ต้องมี วัน/เวลา/ห้อง + กรรมการ 3 คน (ช่อง 2–4) ไม่บังคับประธาน
+  // แนบ autocomplete เฉพาะช่องที่แก้ได้ (2–4)
+  attachAutocomplete("committee2Input", "committee2List", teachers);
+  attachAutocomplete("committee3Input", "committee3List", teachers);
+  attachAutocomplete("committee4Input", "committee4List", teachers);
+
+  // ปุ่มบันทึก (ป้องกัน bind ซ้ำ)
+  if (btnSaveSchedule && !btnSaveSchedule.dataset.bound) {
+    btnSaveSchedule.dataset.bound = "1";
+    btnSaveSchedule.addEventListener("click", () => {
+      const d = $("#examDate")?.value;
+      const t = $("#examTime")?.value;
+      const r = $("#examRoom")?.value?.trim();
+
+      const cA = $("#committee1Input")?.value?.trim(); // ประธาน (optional / disabled)
+      const c1 = $("#committee2Input")?.value?.trim();
+      const c2 = $("#committee3Input")?.value?.trim();
+      const c3 = $("#committee4Input")?.value?.trim();
+
+      if (!d || !t || !r) { alert("กรุณากรอก วันสอบ / เวลา / ห้องสอบ ให้ครบ"); return; }
+      if (!c1 || !c2 || !c3) { alert("กรุณากรอกชื่อกรรมการสอบให้ครบทั้ง 3 คน (ไม่รวมประธาน)"); return; }
+
+      const set = new Set([c1, c2, c3, cA].filter(Boolean));
+      if (set.size < ([c1, c2, c3].filter(Boolean).length + (cA ? 1 : 0))) {
+        alert("รายชื่อกรรมการ/ประธานซ้ำกัน กรุณาเลือกคนละท่าน"); return;
+      }
+
+      const target = LS.get("schedule_target", null);
+      const payload = {
+        ...target,
+        examDate: d, examTime: t, room: r,
+        chair: cA || null,
+        committees: [c1, c2, c3],
+        savedAt: new Date().toISOString()
+      };
+      LS.set("schedule_last_saved", payload);
+
+      alert(
+        `บันทึกกำหนดสอบแล้ว
+ทีม/หัวข้อ: ${payload?.team || "-"} / ${payload?.title || "-"}
+วันที่: ${d}
+เวลา: ${t}
+ห้อง: ${r}
+ประธาน: ${payload.chair || "-"}
+กรรมการ:
+  1) ${c1}
+  2) ${c2}
+  3) ${c3}`
+      );
+      close(scheduleModal);
+    });
+  }
 }
 
 /* ---------------------------
@@ -488,10 +583,10 @@ function initDashboardHelpers() {
     let visible = 0;
 
     rows().forEach(tr => {
-      const text = tr.textContent.toLowerCase();
+      const textC = tr.textContent.toLowerCase();
       const rSt = tr.dataset.status || '';
       const rBr = tr.dataset.branch || '';
-      const ok = (!q || text.includes(q)) && (!st || rSt === st) && (!br || rBr === br);
+      const ok = (!q || textC.includes(q)) && (!st || rSt === st) && (!br || rBr === br);
       tr.style.display = ok ? '' : 'none';
       if (ok) visible++;
     });
@@ -592,7 +687,6 @@ function initAdvisorDashboardAndFeedback() {
         }
       });
 
-      // KPI
       const fmt = n => Number(n).toLocaleString("th-TH");
       const kAll = $("#kpiAll");
       const kPending = $("#kpiPending");
@@ -610,8 +704,10 @@ function initAdvisorDashboardAndFeedback() {
     apply();
   }
 
-  // --- Feedback modal (ใช้โครงสร้าง id จากไฟล์เดิม) ---
+  // --- Feedback modal (ใช้โครงสร้าง id จากหน้าอาจารย์) ---
   const modal = $("#fbModal");
+  if (!modal) return; // ไม่มี modal นี้ก็ข้ามส่วน feedback ไป (จะไม่รบกวนหน้าเจ้าหน้าที่)
+
   const btnClose = $("#fbClose");
   const btnCancel = $("#fbCancel");
   const btnSave = $("#fbSave");
@@ -666,7 +762,7 @@ function initAdvisorDashboardAndFeedback() {
     }
 
     // โหลดค่าที่เคยบันทึก
-    currentKey = `fb_${currentAdvisor || "-"}__${team}__${title}`;
+    currentKey = `fb_${localStorage.getItem("current_advisor") || "-"}__${team}__${title}`;
     const saved = LS.get(currentKey, null);
     if (mPercent) mPercent.value = saved?.percent ?? "";
     if (mComment) mComment.value = saved?.comment ?? "";
@@ -686,7 +782,7 @@ function initAdvisorDashboardAndFeedback() {
     if (Number.isNaN(p)) { show(mError); hide(mSaved); return; }
 
     const payload = {
-      advisor: currentAdvisor || "-",
+      advisor: localStorage.getItem("current_advisor") || "-",
       team: mTeam?.textContent || "-",
       title: mTitle?.textContent || "-",
       percent: p,
@@ -716,160 +812,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initOfficerRequests();
   initDashboardHelpers();
 
-  // Advisor-specific (รวมของเก่าไว้ที่เดียว)
+  // Advisor-specific (รวมของเก่าไว้ที่เดียว และไม่รบกวนหน้าเจ้าหน้าที่)
   initAdvisorDashboardAndFeedback();
-});
-document.addEventListener('DOMContentLoaded', () => {
-  // เปิด autocomplete ถ้า script.js และ dataset พร้อม
-  if (typeof attachAutocomplete === 'function' && Array.isArray(window.teachers)) {
-    attachAutocomplete('committee1Input', 'committee1List', window.teachers);
-    attachAutocomplete('committee2Input', 'committee2List', window.teachers);
-    attachAutocomplete('committee3Input', 'committee3List', window.teachers);
-  }
-
-  // เปิดโมดัลกำหนดสอบจากปุ่มในตาราง (เก็บ context ไว้)
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-action=schedule]');
-    if (!btn) return;
-    const row = btn.closest('tr');
-    if (row) {
-      localStorage.setItem('schedule_target', JSON.stringify({
-        date: row.dataset.date,
-        team: row.dataset.team,
-        title: row.dataset.title,
-        advisor: row.dataset.advisor,
-        branch: row.dataset.branch
-      }));
-    }
-    document.getElementById('scheduleModal')?.setAttribute('aria-hidden', 'false');
-  });
-
-  // ปิดโมดัล
-  document.getElementById('scheduleClose')?.addEventListener('click', () => {
-    document.getElementById('scheduleModal')?.setAttribute('aria-hidden', 'true');
-  });
-  document.getElementById('btnCancelSchedule')?.addEventListener('click', () => {
-    document.getElementById('scheduleModal')?.setAttribute('aria-hidden', 'true');
-  });
-  document.getElementById('scheduleModal')?.addEventListener('click', (e) => {
-    if (e.target.id === 'scheduleModal') e.currentTarget.setAttribute('aria-hidden', 'true');
-  });
-
-  // บันทึกกำหนดสอบ + กรรมการ 3 คน
-  const saveBtn = document.getElementById('btnSaveSchedule');
-  if (saveBtn) {
-    // ป้องกันสมัครพรรคพวก listener ซ้ำจากไฟล์อื่น
-    const clone = saveBtn.cloneNode(true);
-    saveBtn.parentNode.replaceChild(clone, saveBtn);
-
-    clone.addEventListener('click', () => {
-      const d = document.getElementById('examDate')?.value;
-      const t = document.getElementById('examTime')?.value;
-      const r = document.getElementById('examRoom')?.value?.trim();
-
-      const c1 = document.getElementById('committee1Input')?.value?.trim();
-      const c2 = document.getElementById('committee2Input')?.value?.trim();
-      const c3 = document.getElementById('committee3Input')?.value?.trim();
-
-      if (!d || !t || !r) { alert('กรุณากรอก วันสอบ / เวลา / ห้องสอบ ให้ครบ'); return; }
-      if (!c1 || !c2 || !c3) { alert('กรุณากรอกชื่อกรรมการสอบให้ครบทั้ง 3 คน'); return; }
-      const set = new Set([c1, c2, c3]);
-      if (set.size < 3) { alert('รายชื่อกรรมการซ้ำกัน กรุณาเลือกคนละท่าน'); return; }
-
-      let target = null;
-      try { target = JSON.parse(localStorage.getItem('schedule_target') || 'null'); } catch { }
-      const payload = {
-        ...target, examDate: d, examTime: t, room: r,
-        committees: [c1, c2, c3], savedAt: new Date().toISOString()
-      };
-      localStorage.setItem('schedule_last_saved', JSON.stringify(payload));
-
-      alert(
-        `บันทึกกำหนดสอบแล้ว
-ทีม/หัวข้อ: ${payload?.team || '-'} / ${payload?.title || '-'}
-วันที่: ${d}
-เวลา: ${t}
-ห้อง: ${r}
-กรรมการ:
-  1) ${c1}
-  2) ${c2}
-  3) ${c3}`
-      );
-      document.getElementById('scheduleModal')?.setAttribute('aria-hidden', 'true');
-    });
-  }
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  // จดจำแถวปัจจุบันเมื่อกด "ให้ความเห็น"
-  let currentRow = null;
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-action="open-feedback"]');
-    if (!btn) return;
-    currentRow = btn.closest('tr') || null;
-  });
-
-  // ช่วยเปลี่ยนสถานะในแถว + เก็บลง localStorage
-  function setStatus(row, statusText, pillHTML) {
-    if (!row) return;
-    row.dataset.status = statusText;
-
-    const td = row.querySelector('td[data-col="status"]');
-    if (td) td.innerHTML = pillHTML;
-
-    const team  = row.dataset.team  || '-';
-    const title = row.dataset.title || '-';
-    const key   = `adv_status__${team}__${title}`;
-    localStorage.setItem(key, JSON.stringify({
-      status: statusText,
-      updatedAt: new Date().toISOString()
-    }));
-  }
-
-  // ปิดโมดัลสั้นๆ
-  function closeModal() {
-    const m = document.getElementById('fbModal');
-    if (m) m.setAttribute('aria-hidden','true');
-  }
-
-  // ผูกปุ่ม 3 สถานะ
-  document.getElementById('btnApprove')?.addEventListener('click', () => {
-    setStatus(currentRow, 'อนุมัติ', '<span class="p p-ok">อนุมัติ</span>');
-    closeModal();
-  });
-
-  document.getElementById('btnApproveEdit')?.addEventListener('click', () => {
-    setStatus(currentRow, 'แก้ไข', '<span class="p p-edit">แก้ไข</span>');
-    closeModal();
-  });
-
-  document.getElementById('btnReject')?.addEventListener('click', () => {
-    setStatus(currentRow, 'ไม่ผ่าน', '<span class="p p-no">ไม่ผ่าน</span>');
-    closeModal();
-  });
-
-  // โหลดสถานะเดิม (ถ้ามี) เมื่อหน้าเพิ่งเปิด
-  document.querySelectorAll('#advListTable tbody tr').forEach(tr => {
-    const team  = tr.dataset.team  || '-';
-    const title = tr.dataset.title || '-';
-    const key   = `adv_status__${team}__${title}`;
-    try {
-      const saved = JSON.parse(localStorage.getItem(key) || 'null');
-      if (saved?.status) {
-        const mapHTML = {
-          'อนุมัติ': '<span class="p p-ok">อนุมัติ</span>',
-          'แก้ไข'  : '<span class="p p-edit">แก้ไข</span>',
-          'ไม่ผ่าน': '<span class="p p-no">ไม่ผ่าน</span>',
-          'รอตรวจ': '<span class="p p-wait">รอตรวจ</span>',
-          'กำลังทำ': '<span class="pill pill-run">กำลังทำ</span>',
-          'รอสอบ'  : '<span class="pill pill-wait">รอสอบ</span>'
-        };
-        const td = tr.querySelector('td[data-col="status"]');
-        if (td && mapHTML[saved.status]) {
-          tr.dataset.status = saved.status;
-          td.innerHTML = mapHTML[saved.status];
-        }
-      }
-    } catch {}
-  });
 });

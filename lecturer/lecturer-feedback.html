@@ -99,6 +99,7 @@
                                 data-advisor="รศ.ดร.อนิราช มิ่งขวัญ" data-coadvisor="อ.ดร.ประดิษฐ์ พิทักษ์เสถียรกุล"
                                 data-duedate="2025-11-01" data-docs="ok"
                                 data-detail="ติดตั้งเซ็นเซอร์ (อุณหภูมิ/สั่นสะเทือน/กระแสไฟ) ตามจุดสำคัญของสายการผลิต ส่งข้อมูลผ่าน MQTT → Time-series DB และแสดงผลแดชบอร์ดเรียลไทม์ พร้อมการแจ้งเตือนเมื่อเกินเกณฑ์"
+                                data-students='["6806022610097 นายปภังกร สุวรรณรัตน์","6806022610186 นายอคิราภ์ สมัครจิตร์"]'
                                 data-files='[{"name":"ใบยื่นสอบ.pdf","url":"#"}]'>
                                 <td>2025-10-03</td>
                                 <td>G3</td>
@@ -116,6 +117,7 @@
                                 data-type="โครงงานสหกิจ" data-status="รออนุมัติ" data-advisor="อ.ดร.ศิรินทรา แว่วศรี"
                                 data-coadvisor="ผศ.พีระศักดิ์ เสรีกุล" data-duedate="2025-10-22" data-docs="missing"
                                 data-detail="ใช้กล้องไลน์สแกนความละเอียดสูงและโมเดลตรวจจับจุดบกพร่อง (defect detection) เพื่อคัด Type ของเสีย ออกรีพอร์ตสรุปอัตราของเสียรายวัน/รายล็อต ส่งต่อผู้ควบคุมคุณภาพ"
+                                data-students='["6806022610097 นายปภังกร สุวรรณรัตน์","6806022610186 นายอคิราภ์ สมัครจิตร์"]'
                                 data-files='[{"name":"คำขอ.pdf","url":"#"}]'>
                                 <td>2025-10-10</td>
                                 <td>G2</td>
@@ -153,6 +155,20 @@
                     <div>
                         <span class="d-label">สาขา</span>
                         <div class="d-value" id="mBranch">-</div>
+                    </div>
+                    <!-- รายชื่อนักศึกษา -->
+                    <div class="full detail-section">
+                        <span class="d-label">รายชื่อนักศึกษา</span>
+                        <p id="dStudents1" class="d-value">-</p><br>
+                        <p id="dStudents2" class="d-value">-</p>
+                    </div>
+                    <div>
+                        <span class="d-label">อาจารย์ที่ปรึกษา</span>
+                        <div id="dAdvisor" class="d-value">-</div>
+                    </div>
+                    <div>
+                        <span class="d-label">อาจารย์ที่ปรึกษาร่วม</span>
+                        <div id="dCoadvisor" class="d-value">-</div>
                     </div>
                     <div class="full">
                         <span class="d-label">หัวข้อ</span>
@@ -192,58 +208,155 @@
 
 </body>
 <script>
-    (function () {
-        const table = document.getElementById('advListTable');
-        const modal = document.getElementById('fbModal');
-        const openAllBtn = document.getElementById('btnOpenAll');
+(function () {
+  // ---------- helpers (ไม่พึ่ง LS/โค้ดภายนอก) ----------
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+  const getLS = (k, fb = null) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fb; } catch { return fb; } };
+  const setLS = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
 
-        const elTeam = document.getElementById('mTeam');
-        const elBranch = document.getElementById('mBranch');
-        const elTitle = document.getElementById('mTitle');
-        const elDetail = document.getElementById('mDetail');
-        const elFiles = document.getElementById('mFiles');
+  const advisor = (document.body.dataset.advisor || "").trim();
+  const nameEl = $("#advisorName");
+  if (nameEl) nameEl.textContent = advisor ? `ผู้ใช้งาน: ${advisor}` : "ผู้ใช้งาน: -";
 
-        function openModal() { modal.setAttribute('aria-hidden', 'false'); }
-        function closeModal() { modal.setAttribute('aria-hidden', 'true'); }
-        document.getElementById('fbClose').addEventListener('click', closeModal);
-        document.getElementById('fbCancel').addEventListener('click', closeModal);
+  // ---------- filters (qSearch / branchFilter / statusFilter) ----------
+  const tbody = $("#advListTable tbody");
+  const qInput = $("#qSearch");
+  const brSel = $("#branchFilter");
+  const stSel = $("#statusFilter");
 
-        table.addEventListener('click', (e) => {
-            const btn = e.target.closest('[data-action="open-feedback"]');
-            if (!btn) return;
-            const tr = btn.closest('tr');
+  function applyFilters() {
+    const q = (qInput?.value || "").toLowerCase().trim();
+    const br = brSel?.value || "";
+    const st = stSel?.value || "";
 
-            // ข้อมูลหัวโมดัล
-            elTeam.textContent = tr.dataset.team || '-';
-            elBranch.textContent = tr.dataset.branch || '-';
-            elTitle.textContent = tr.dataset.title || '-';
+    $$("#advListTable tbody tr").forEach(tr => {
+      const okQ = !q || tr.textContent.toLowerCase().includes(q);
+      const okB = !br || tr.dataset.branch === br;
+      const okS = !st || tr.dataset.status === st;
+      tr.style.display = (okQ && okB && okS) ? "" : "none";
+    });
+  }
+  ["input", "change"].forEach(ev => {
+    qInput?.addEventListener(ev, applyFilters);
+    brSel?.addEventListener(ev, applyFilters);
+    stSel?.addEventListener(ev, applyFilters);
+  });
+  applyFilters();
 
-            // รายละเอียดโครงงาน
-            elDetail.textContent = tr.dataset.detail || '-';
+  // ---------- modal ----------
+  const modal = $("#fbModal");
+  const btnClose = $("#fbClose");
+  const btnCancel = $("#fbCancel");
+  const btnSave = $("#fbSave");
+  const btnOpenAll = $("#btnOpenAll");
 
-            // ไฟล์แนบ
-            elFiles.innerHTML = '';
-            let files = [];
-            try { files = JSON.parse(tr.dataset.files || '[]'); } catch { }
-            files.forEach(f => {
-                const li = document.createElement('li');
-                const a = document.createElement('a');
-                a.href = f.url || '#'; a.textContent = f.name || 'ไฟล์';
-                a.target = '_blank';
-                li.appendChild(a); elFiles.appendChild(li);
-            });
-            openAllBtn.onclick = () => files.forEach(f => f.url && window.open(f.url, '_blank'));
+  const mTeam = $("#mTeam");
+  const mBranch = $("#mBranch");
+  const mTitle = $("#mTitle");
+  const mDetail = $("#mDetail");
+  const mFiles = $("#mFiles");
+  const mComment = $("#mComment");
+  const mPercent = $("#mPercent");
 
-            openModal();
+  const dStudents1 = $("#dStudents1");
+  const dStudents2 = $("#dStudents2");
+  const dAdvisor = $("#dAdvisor");
+  const dCoadvisor = $("#dCoadvisor");
+
+  const open = () => modal?.setAttribute("aria-hidden", "false");
+  const close = () => modal?.setAttribute("aria-hidden", "true");
+  btnClose?.addEventListener("click", close);
+  btnCancel?.addEventListener("click", close);
+  modal?.addEventListener("click", e => { if (e.target === modal) close(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") close(); });
+
+  // เปิดโมดัล + เติมข้อมูลจาก <tr>
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-action='open-feedback']");
+    if (!btn) return;
+    const tr = btn.closest("tr"); if (!tr) return;
+
+    // Header fields
+    mTeam.textContent = tr.dataset.team || "-";
+    mBranch.textContent = tr.dataset.branch || "-";
+    mTitle.textContent = tr.dataset.title || "-";
+
+    // Students & advisors
+    let students = [];
+    try { students = JSON.parse(tr.dataset.students || "[]"); } catch {}
+    dStudents1 && (dStudents1.textContent = students[0] || "-");
+    dStudents2 && (dStudents2.textContent = students[1] || (students[0] ? "" : "-"));
+    dAdvisor && (dAdvisor.textContent = tr.dataset.advisor || "-");
+    dCoadvisor && (dCoadvisor.textContent = tr.dataset.coadvisor || "-");
+
+    // Detail
+    mDetail.textContent = tr.dataset.detail || "-";
+
+    // Files
+    mFiles.innerHTML = "";
+    let files = [];
+    try { files = JSON.parse(tr.dataset.files || "[]"); } catch {}
+    if (Array.isArray(files) && files.length) {
+      files.forEach(f => {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = f.url || "#"; a.target = "_blank"; a.rel = "noopener";
+        a.textContent = f.name || "ไฟล์";
+        li.appendChild(a); mFiles.appendChild(li);
+      });
+      btnOpenAll?.removeAttribute("disabled");
+      btnOpenAll?.classList.remove("is-disabled");
+      if (btnOpenAll && !btnOpenAll.dataset.bound) {
+        btnOpenAll.dataset.bound = "1";
+        btnOpenAll.addEventListener("click", () => {
+          $$("#mFiles a").forEach(a => a.href && a.href !== "#" && window.open(a.href, "_blank", "noopener"));
         });
+      }
+    } else {
+      const li = document.createElement("li");
+      li.textContent = "— ไม่มีไฟล์แนบ —";
+      mFiles.appendChild(li);
+      btnOpenAll?.setAttribute("disabled", "true");
+    }
 
-        // เดโมบันทึกความเห็น
-        document.getElementById('fbSave').addEventListener('click', () => {
-            const saved = document.getElementById('mSaved');
-            saved.style.display = 'block';
-            setTimeout(() => saved.style.display = 'none', 1500);
-        });
-    })();
+    // Restore saved feedback
+    const key = `fb_${advisor || "-"}__${tr.dataset.team || "-"}__${tr.dataset.title || "-"}`;
+    const saved = getLS(key, null);
+    if (mComment) mComment.value = saved?.comment ?? "";
+    if (mPercent && typeof saved?.percent === "number") mPercent.value = String(saved.percent);
+
+    open();
+  });
+
+  // Save feedback
+  btnSave?.addEventListener("click", () => {
+    const team = mTeam?.textContent || "-";
+    const title = mTitle?.textContent || "-";
+    const key = `fb_${advisor || "-"}__${team}__${title}`;
+
+    let p = Number(mPercent?.value);
+    if (Number.isNaN(p)) p = 0;
+    p = clamp(p, 0, 100);
+
+    const payload = {
+      advisor: advisor || "-",
+      team, title,
+      percent: p,
+      comment: (mComment?.value || "").trim(),
+      savedAt: new Date().toISOString()
+    };
+    setLS(key, payload);
+
+    const savedNote = $("#mSaved");
+    if (savedNote) {
+      savedNote.style.display = "block";
+      setTimeout(() => savedNote.style.display = "none", 1300);
+    }
+  });
+})();
 </script>
+
 
 </html>
