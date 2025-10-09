@@ -2004,3 +2004,19 @@ body {
     overflow: auto;
     z-index: 1100;
 }
+
+
+
+/* ให้รายชื่อใน dropdown เดิมของคุณสูงขึ้น คลิกง่ายขึ้น */
+.dropdown.open {
+    max-height: 280px;
+    /* เดิมเตี้ยไปหน่อย */
+    overflow: auto;
+}
+
+.dropdown .dropdown-item {
+    padding: 10px 12px;
+    /* แตะง่ายขึ้น */
+    font-size: 0.95rem;
+}
+

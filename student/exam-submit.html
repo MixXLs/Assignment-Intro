@@ -4,17 +4,18 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>สถานะโครงงานสหกิจ</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <title>ยื่นสอบโครงงาน</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <!-- ถ้ามี script.js เดิมของระบบ ก็สามารถใส่ได้ แต่หน้านี้ทำงานได้ด้วยตัวเอง -->
+    <!-- <script defer src="../JavaScript/script.js"></script> -->
+
 </head>
 
-<body>
+<body class="req-surface">
     <!-- Topbar -->
     <div class="topbar">
         <div class="seal">
-            <a href="../index.html">
-                <img src="../images/kmutnb_logo.png" alt="KMUTNB Logo">
-            </a>
+            <a href="../index.html"><img src="../images/kmutnb_logo.png" alt="KMUTNB Logo" /></a>
         </div>
         <div class="kmut-text">
             KING MONGKUT'S UNIVERSITY OF TECHNOLOGY NORTH BANGKOK
@@ -24,17 +25,16 @@
 
     <div class="wrapper">
         <!-- Sidebar -->
-        <aside class="sidebar">
+        <aside id="sidebar" class="sidebar">
             <nav>
                 <div class="menu-title">โครงงาน</div>
                 <a href="student.html" class="back-btn">⬅ กลับหน้าหลัก</a>
                 <a href="Cooperative-project-1.html">เสนอหัวข้อโครงงาน</a>
                 <a href="Cooperative-project-2.html">ความก้าวหน้าโครงงาน</a>
-                <a href="Cooperative-project-status.html" class="active">สถานะโครงงานสหกิจ</a>
+                <a href="Cooperative-project-status.html" class="active">ยื่นสอบโครงงาน</a>
             </nav>
-
             <div class="contact">
-                <div class="gear-icons"><img src="../images/gear_red.png" alt="gear"></div>
+                <div class="gear-icons"><img src="../images/gear_red.png" alt="gear" /></div>
                 <div>กรณีที่พบปัญหาการใช้งาน</div>
                 <div>ติดต่อได้ที่ 02-555-2000</div>
                 <div>กลุ่มงานทะเบียนฯ ต่อ 1628-1635</div>
@@ -44,12 +44,11 @@
             </div>
         </aside>
 
-        <!-- Main Content -->
+        <!-- Main -->
         <main class="main2">
-            <section class="page status-page">
-                <h1>สถานะโครงงานสหกิจ</h1>
+            <section class="page">
+                <h1>ยื่นสอบโครงงาน</h1>
 
-                <!-- ข้อมูลโปรเจกต์ -->
                 <div class="form-card" style="margin-bottom:16px;">
                     <div class="form-row">
                         <div>
@@ -73,35 +72,36 @@
                             <input id="coAdvisor" class="input soft" type="text" value="รศ.ดร.อนิราช มิ่งขวัญ" readonly>
                         </div>
                     </div>
-                </div>
 
-                <!-- ความคืบหน้า -->
-                <div class="form-card">
-                    <div class="progress-section">
-                        <div class="progress-header" style="justify-content:center;">
-                            <span id="percent" class="percent">100%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div id="progress" class="progress-fill" style="width:100%"></div>
+                    <!-- อัปโหลดไฟล์เล่มโครงงาน -->
+                    <div class="divider"></div>
+                    <div class="form-row">
+                        <div>
+                            <label class="label">ไฟล์เล่มโครงงาน <span class="hint">(บังคับ)</span></label>
+                            <input id="fileThesis" class="input" type="file" accept=".pdf,.doc,.docx" />
+                            <div id="thesisInfo" class="file-info"></div>
                         </div>
                     </div>
 
-                    <!-- ปุ่มยื่นสอบ -->
-                    <div class="actions" style="margin-top: 20px; text-align:center;">
-                        <form action="exam-submit.html" method="get">
-                            <button type="submit" class="btn-save">✓ ยื่นสอบ</button>
-                        </form>
+                    <!-- อัปโหลดไฟล์นำเสนอ -->
+                    <div class="form-row">
+                        <div>
+                            <label class="label">ไฟล์นำเสนอ (สไลด์) <span class="hint">(บังคับ)</span></label>
+                            <input id="fileSlide" class="input" type="file" accept=".pdf,.ppt,.pptx" />
+                            <div id="slideInfo" class="file-info"></div>
+                        </div>
                     </div>
 
+                    <div class="actions">
+                        <button id="btnSubmit" class="btn-save" disabled>✓ ส่งยื่นสอบ</button>
+                        <button id="btnReset" type="button" class="btn-save">ล้างไฟล์</button>
+                    </div>
                 </div>
             </section>
         </main>
     </div>
 
     <footer>© 2025 ระบบจัดการโครงงาน · FITM · KMUTNB</footer>
-
-
-    <script src="../JavaScript/script.js"></script>
 </body>
 
 </html>
