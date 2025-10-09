@@ -217,6 +217,7 @@ function initExamSubmit() {
   attachAutocomplete("committee1Input", "committee1List", teachers);
   attachAutocomplete("committee2Input", "committee2List", teachers);
   attachAutocomplete("committee3Input", "committee3List", teachers);
+  attachAutocomplete("committee4Input", "committee4List", teachers);
 
   const oldAdvisor = localStorage.getItem("sp_advisor");
   if (oldAdvisor && $("#advisorInput")) setVal("advisorInput", oldAdvisor);
@@ -230,15 +231,16 @@ function initExamSubmit() {
     const c1 = val("committee1Input");
     const c2 = val("committee2Input");
     const c3 = val("committee3Input");
+    const c4 = val("committee4Input");
 
     // ต้องมีที่ปรึกษา + กรรมการอย่างน้อย 2
     if (!advisor || !c1 || !c2) {
-      show(examError); text(examError, "⚠ กรุณากรอกอาจารย์ที่ปรึกษา และกรรมการอย่างน้อย 2 คน");
+      show(examError); text(examError, "⚠ กรุณากรอกอาจารย์ที่ปรึกษา และกรรมการอย่างน้อย 3 คน");
       hide(examSuccess); return;
     }
 
     // ห้ามซ้ำกัน (ที่ปรึกษา/กรรมการทั้งหมด)
-    const all = [advisor, c1, c2, c3].filter(Boolean);
+    const all = [advisor, c1, c2, c3, c4].filter(Boolean);
     if (!uniqueNonEmpty(all)) {
       show(examError); text(examError, "⚠ รายชื่อซ้ำกัน กรุณาเลือกคนละท่าน"); hide(examSuccess); return;
     }
