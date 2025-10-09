@@ -5,11 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Lecturer Login</title>
   <link rel="stylesheet" href="../css/login.css">
+
+  <style>
+    body {
+      background: url("../images/KMUTNBPRACHINBURI.png") no-repeat center center fixed;
+      background-size: cover;     /* ให้ภาพเต็มหน้าจอ */
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      height: 100vh;
+    }
+
+    /* ชั้นโปร่งใสช่วยให้อ่านง่าย */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,0.65);
+      z-index: -1;
+    }
+  </style>
 </head>
 <body>
 
+  <!-- ชั้นโปร่งใสพื้นหลัง -->
+  <div class="overlay"></div>
+
   <div class="page-frame">
-    <!-- ใช้คลาส login-lecturer เพื่อกำหนดธีมสี/สไตล์ -->
     <div class="login-card login-lecturer">
       <aside class="left-panel">
         <h2>Lecturer</h2>
@@ -34,7 +54,7 @@
         <form class="login-form" action="lecturer.html" method="get">
           <input type="email" placeholder="email" name="email" required>
           <input type="password" placeholder="password" name="password" required minlength="6">
-          <button class="button" type="submit" href="lecturer.html">login</button>
+          <button class="button" type="submit">login</button>
         </form>
       </section>
     </div>
