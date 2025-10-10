@@ -815,3 +815,50 @@ document.addEventListener("DOMContentLoaded", () => {
   // Advisor-specific (รวมของเก่าไว้ที่เดียว และไม่รบกวนหน้าเจ้าหน้าที่)
   initAdvisorDashboardAndFeedback();
 });
+
+// ...existing code...
+
+// ===== Sidebar Toggle (Mobile Hamburger) =====
+function initMobileSidebarToggle() {
+    const toggle = document.querySelector('.sidebar-toggle');
+    const sidebar = document.querySelector('.sidebar');
+    if (!toggle || !sidebar) return;
+
+    // ป้องกัน bind ซ้ำ
+    if (toggle.dataset.bound) return;
+    toggle.dataset.bound = "1";
+
+    toggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        sidebar.classList.toggle('open');
+        document.body.classList.toggle('sidebar-open');
+    });
+
+    // ปิด sidebar เมื่อคลิกนอก sidebar หรือกด Escape
+    document.addEventListener('click', function(e) {
+        if (
+            sidebar.classList.contains('open') &&
+            !sidebar.contains(e.target) &&
+            !toggle.contains(e.target)
+        ) {
+            sidebar.classList.remove('open');
+            document.body.classList.remove('sidebar-open');
+        }
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === "Escape" && sidebar.classList.contains('open')) {
+            sidebar.classList.remove('open');
+            document.body.classList.remove('sidebar-open');
+        }
+    });
+}
+
+// เรียกใช้ใน DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+    // ...existing code...
+    initMobileSidebarToggle();
+    // ...existing code...
+});
+
+// ...existing code...
